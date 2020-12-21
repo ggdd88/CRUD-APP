@@ -55,6 +55,17 @@ function handleChange(value) {
           });      
     }, [])
 
+
+    useEffect(()=>{
+      Axios.post("http://localhost:3001/api/get-user-zones", {
+        userid: cat,
+      }).then((response) => {
+        console.log(response);
+        setUsuario(response.data);
+      });      
+}, [])
+
+
     const [id, setId] = useState('');
     const [zone, setZona] = useState('');
 
@@ -132,9 +143,10 @@ function handleChange(value) {
                         <p>Card content</p>
                       </Card>
                       <Card title="Zonas de trabajo" style={{ width: 750 }}>
-                        <p>Card content</p>
-                        <p>Card content</p>
-                        <p>Card content</p>
+                      {usuario.map((val, key) => {
+                            return (
+                              <p>{val.descripcion}</p>
+                            )                        })}
                       </Card>
                       <Card title="Días y horarios de atención" style={{ width: 750 }}>
                         <p>Card content</p>

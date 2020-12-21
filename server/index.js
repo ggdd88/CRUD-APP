@@ -52,6 +52,16 @@ app.post("/api/get-user-info", (req, res)=>{
     });
 });
 
+app.post("/api/get-user-zones", (req, res)=>{
+    const userid = 32
+
+    const sqlSelectZoneUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
+    db.query(sqlSelectZoneUser, [userid], (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
 
 app.post("/api/insert", (req, res)=> {
 
