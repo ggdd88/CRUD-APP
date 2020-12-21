@@ -41,17 +41,6 @@ app.get("/api/get", (req, res)=>{
     });
 });
 
-// app.post("/api/get-user-info", (req, res)=>{
-
-//     const userid = req.body.userid;
-
-//     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";
-//     db.query(sqlSelectUser, [userid], (err, result) => {
-//         console.log(result)
-//         res.send(result);
-//     });
-// });
-
 
 app.post("/api/get-user-info", (req, res)=>{
     const userid = req.body.userid
@@ -100,6 +89,19 @@ app.post("/api/insert-cliente", (req, res)=> {
 
     const sqlInsertCliente = "INSERT INTO usuarios (nombre, apellido, sexo, documento, email, fecha_nac, telefono, pw, calificacion, tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sqlInsertCliente, [nombre, apellido, sexo, documento, email, fecha_nac, telefono, pw, calificacion, tipo], (err, result) => {
+        console.log(result)
+        console.log(err)
+
+    });
+});
+
+app.post("/api/set-zones", (req, res)=> {
+
+    const userid = 25
+    const zona = req.body.zona
+
+    const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion) VALUES (?, ?)";
+    db.query(sqlInsertZona, [userid, zona], (err, result) => {
         console.log(result)
         console.log(err)
 
