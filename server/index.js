@@ -53,10 +53,20 @@ app.post("/api/get-user-info", (req, res)=>{
 });
 
 app.post("/api/get-user-zones", (req, res)=>{
-    const userid = 32
+    const userid = 25
 
     const sqlSelectZoneUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
     db.query(sqlSelectZoneUser, [userid], (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
+app.post("/api/get-user-services", (req, res)=>{
+    const userid = 25
+
+    const sqlSelectServiceUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
+    db.query(sqlSelectServiceUser, [userid], (err, result) => {
         console.log(result)
         res.send(result);
     });
@@ -112,6 +122,20 @@ app.post("/api/set-zones", (req, res)=> {
 
     const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion) VALUES (?, ?)";
     db.query(sqlInsertZona, [userid, zona], (err, result) => {
+        console.log(result)
+        console.log(err)
+
+    });
+});
+
+app.post("/api/set-services", (req, res)=> {
+
+    const id_usuario = 25
+    const descripcion = req.body.descripcion
+    const tarifa = req.body.tarifa
+
+    const sqlInsertServicio = "INSERT INTO servicios (id_usuario, descripcion, tarifa) VALUES (?, ?, ?)";
+    db.query(sqlInsertServicio, [id_usuario, descripcion, tarifa], (err, result) => {
         console.log(result)
         console.log(err)
 

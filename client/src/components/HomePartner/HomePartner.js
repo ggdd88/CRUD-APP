@@ -38,12 +38,19 @@ function HomePartner () {
     // };
 
     
-function handleChange(value) {
+function handleChangeZona(value) {
   console.log(`selected ${value}`);
   setZona(value);
   }  
 
+function handleChangeServicio(value) {
+  console.log(`selected ${value}`);
+  setDescripcion(value);
+  }  
+
     const [usuario, setUsuario] = useState([]);
+    const [zonasUsuario, setZonasUsuario] = useState([]);
+    const [serviciosUsuario, setServiciosUsuario] = useState([]);
     
 
     useEffect(()=>{
@@ -61,12 +68,21 @@ function handleChange(value) {
         userid: cat,
       }).then((response) => {
         console.log(response);
-        setUsuario(response.data);
+        setZonasUsuario(response.data);
       });      
 }, [])
 
+    useEffect(()=>{
+      Axios.post("http://localhost:3001/api/get-user-services", {
+        userid: cat,
+      }).then((response) => {
+        console.log(response);
+        setServiciosUsuario(response.data);
+      });      
+    }, [])
 
-    const [id, setId] = useState('');
+
+
     const [zone, setZona] = useState('');
 
     const [zonaList, setZona2] = useState([]);
@@ -81,8 +97,29 @@ function handleChange(value) {
         }), 
         zona: zone,      
       });
-      setZona2([...zonaList, { userid: id, zona: zone, }      
-      ]);
+      // setZona2([...zonaList, { userid: userid, zona: zone, }      
+      // ]);
+    };
+
+    const [tarifa, setTarifa] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+
+    const [servicioList, setServicio] = useState([]);
+
+
+    const setServ = () => {
+      Axios.post("http://localhost:3001/api/set-services", {
+        id_usuario: usuario.map((val) => {
+          return (
+            <h1>{val.id}</h1>
+          );
+        }), 
+        descripcion: descripcion,  
+        tarifa: tarifa,
+    
+      });
+      // setServicio([...servicioList, { id_usuario: id_usuario, descripcion: descripcion, tarifa: tarifa }      
+      // ]);
     };
 
 
@@ -138,12 +175,13 @@ function handleChange(value) {
                     </div>                      
                     <div id="grid_2">
                       <Card title="Servicios" style={{ width: 750 }}>
-                        <p>Card content</p>
-                        <p>Card content</p>
-                        <p>Card content</p>
+                      {serviciosUsuario.map((val, key) => {
+                            return (
+                              <p>{val.descripcion} $ {val.tarifa}</p>
+                            )                        })}
                       </Card>
                       <Card title="Zonas de trabajo" style={{ width: 750 }}>
-                      {usuario.map((val, key) => {
+                      {zonasUsuario.map((val, key) => {
                             return (
                               <p>{val.descripcion}</p>
                             )                        })}
@@ -154,41 +192,17 @@ function handleChange(value) {
                         <p>Card content</p>
                       </Card>
                       <Form layout="vertical" hideRequiredMark>
-                        {/* <h1>Seleccioná tus servicios</h1>
+                      <h1>Seleccioná tus servicios</h1>
                           <Row gutter={16}>            
-                            <Col span={12}>                  
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-                                  <Row>
-                                  <Col span={8}>
-                                      <Checkbox value="A">Pelo</Checkbox>
-                                  </Col>
-                                  <Form.Item
-                                name="tarifa"
-                                rules={[{ required: true, message: 'Ingresá la tarifa' }]}
-                              >
-                                <Input placeholder="Ingresá la tarifa" />
-                              </Form.Item>
-                                  </Row>
-                              </Checkbox.Group>
+                            <Col span={12}>
+                                <Select defaultValue="Pelo" style={{ width: 120 }} onChange={handleChangeServicio}>
+                                  <Option value="Pelo">Pelo</Option>
+                                  <Option value="Barba">Barba</Option>
+                                </Select>
+                                <Input placeholder="Ingresá la tarifa" onChange={(e) => {
+                                  setTarifa(e.target.value)}} />
                             </Col>
                           </Row>
-                          <Row gutter={16}>            
-                            <Col span={12}>                  
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-                                  <Row>
-                                  <Col span={8}>
-                                      <Checkbox value="B">Barba</Checkbox>
-                                  </Col>
-                                  <Form.Item
-                                name="tarifa"
-                                rules={[{ required: true, message: 'Ingresá la tarifa' }]}
-                              >
-                                <Input placeholder="Ingresá la tarifa" />
-                              </Form.Item>
-                                  </Row>
-                              </Checkbox.Group>
-                            </Col>
-                          </Row> */}
                             <h1>Seleccioná tus zonas de trabajo</h1>
                           <Row gutter={16}>                          
                             <Col span={12}>                  
@@ -205,35 +219,35 @@ function handleChange(value) {
                                     mode="multiple"
                                     style={{ width: '100%' }}
                                     placeholder="Seleccioná tus zonas"
-                                    onChange={handleChange}
+                                    onChange={handleChangeZona}
                                     optionLabelProp="label"
                                   >
-                                    <Option value="centro" label="Centro">
+                                    <Option value="Centro" label="Centro">
                                       <div className="demo-option-label-item">
                                         Centro
                                       </div>
                                     </Option>
-                                    <Option value="norte" label="Norte">
+                                    <Option value="Norte" label="Norte">
                                       <div className="demo-option-label-item">
                                         Norte
                                       </div>
                                     </Option>
-                                    <Option value="oeste" label="Oeste">
+                                    <Option value="Oeste" label="Oeste">
                                       <div className="demo-option-label-item">
                                         Oeste
                                       </div>
                                     </Option>
-                                    <Option value="noroeste" label="Noroeste">
+                                    <Option value="Noroeste" label="Noroeste">
                                       <div className="demo-option-label-item">
                                         Noroeste
                                       </div>
                                     </Option>
-                                    <Option value="sur" label="Sur">
+                                    <Option value="Sur" label="Sur">
                                       <div className="demo-option-label-item">
                                         Sur
                                       </div>
                                     </Option>
-                                    <Option value="sudoeste" label="Sudoeste">
+                                    <Option value="Sudoeste" label="Sudoeste">
                                       <div className="demo-option-label-item">
                                         Sudoeste
                                       </div>
@@ -304,6 +318,7 @@ function handleChange(value) {
                                     </Col>
                                   </Row> */}
                                   <Button onClick={setZona3} type="primary" htmlType="submit" >Guardar Zona</Button>
+                                  <Button onClick={setServ} type="primary" htmlType="submit" >Guardar Servicio</Button>
                                 </Form>
                     </div>
                       {/* <Button type="primary" onClick={showDrawer}>Configuración de perfil</Button>

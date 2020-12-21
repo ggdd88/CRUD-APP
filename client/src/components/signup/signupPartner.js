@@ -58,6 +58,7 @@ const tailFormItemLayout = {
     const [pw, setPw] = useState('');
     const [tarifa, setTarifa] = useState('');
     const [calificacion, setCalificacion] = useState('');
+    
     const [prestadorList, setPrestador] = useState([]);
     //const [newReview, setNewReview] = useState ("");
 
