@@ -72,6 +72,16 @@ app.post("/api/get-user-services", (req, res)=>{
     });
 });
 
+app.post("/api/get-user-days", (req, res)=>{
+    const userid = 25
+
+    const sqlSelectServiceUser = "SELECT descripcion FROM dias WHERE ID_usuario = ?";
+    db.query(sqlSelectServiceUser, [userid], (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
 
 app.post("/api/insert", (req, res)=> {
 
@@ -136,6 +146,19 @@ app.post("/api/set-services", (req, res)=> {
 
     const sqlInsertServicio = "INSERT INTO servicios (id_usuario, descripcion, tarifa) VALUES (?, ?, ?)";
     db.query(sqlInsertServicio, [id_usuario, descripcion, tarifa], (err, result) => {
+        console.log(result)
+        console.log(err)
+
+    });
+});
+
+app.post("/api/set-dias", (req, res)=> {
+
+    const id_usuario = 25
+    const descripcion = req.body.descripcion
+
+    const sqlInsertDias = "INSERT INTO dias (id_usuario, descripcion) VALUES (?, ?)";
+    db.query(sqlInsertDias, [id_usuario, descripcion], (err, result) => {
         console.log(result)
         console.log(err)
 

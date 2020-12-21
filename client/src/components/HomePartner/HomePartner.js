@@ -46,11 +46,20 @@ function handleChangeZona(value) {
 function handleChangeServicio(value) {
   console.log(`selected ${value}`);
   setDescripcion(value);
-  }  
+  }
+
+  function handleChangeDias(value) {
+    console.log(`selected ${value}`);
+    setDias_(value);
+    }
+
+
+  
 
     const [usuario, setUsuario] = useState([]);
     const [zonasUsuario, setZonasUsuario] = useState([]);
     const [serviciosUsuario, setServiciosUsuario] = useState([]);
+    const [diasUsuario, setDiasUsuario] = useState([]);
     
 
     useEffect(()=>{
@@ -78,6 +87,15 @@ function handleChangeServicio(value) {
       }).then((response) => {
         console.log(response);
         setServiciosUsuario(response.data);
+      });      
+    }, [])
+
+    useEffect(()=>{
+      Axios.post("http://localhost:3001/api/get-user-days", {
+        userid: cat,
+      }).then((response) => {
+        console.log(response);
+        setDiasUsuario(response.data);
       });      
     }, [])
 
@@ -121,6 +139,20 @@ function handleChangeServicio(value) {
       // setServicio([...servicioList, { id_usuario: id_usuario, descripcion: descripcion, tarifa: tarifa }      
       // ]);
     };
+
+    const [descripcionDias, setDias_] = useState('');
+
+    const setDias = () => {
+      Axios.post("http://localhost:3001/api/set-dias", {
+        id_usuario: usuario.map((val) => {
+          return (
+            <h1>{val.id}</h1>
+          );
+        }), 
+        descripcion: descripcionDias,   
+      });
+    };
+
 
 
 
@@ -169,7 +201,7 @@ function handleChangeServicio(value) {
                               <p>{val.email}</p>)})}</p>
                             <p>Calificación: {usuario.map((val, key) => {
                             return (
-                              <Rate disabled defaultValue={val.calificacion} />)})}</p>
+                              <Rate disabled defaultValue={4} />)})}</p>
                             </div>}/>
                       </Card>
                     </div>                      
@@ -187,9 +219,10 @@ function handleChangeServicio(value) {
                             )                        })}
                       </Card>
                       <Card title="Días y horarios de atención" style={{ width: 750 }}>
-                        <p>Card content</p>
-                        <p>Card content</p>
-                        <p>Card content</p>
+                      {diasUsuario.map((val, key) => {
+                            return (
+                              <p>{val.descripcion}</p>
+                            )                        })}
                       </Card>
                       <Form layout="vertical" hideRequiredMark>
                       <h1>Seleccioná tus servicios</h1>
@@ -211,7 +244,7 @@ function handleChangeServicio(value) {
                                 //label="Zonas de trabajo"
                                 rules={[
                                   {
-                                    required: true,
+                                    //required: true,
                                     message: 'Ingresá al menos una zona',
                                   },
                                 ]}>
@@ -256,7 +289,7 @@ function handleChangeServicio(value) {
                               </Form.Item>
                                 </Col>
                               </Row>
-                              {/* <h1>Seleccioná tus días y horarios de atención</h1>
+                              <h1>Seleccioná tus días de atención</h1>
                               <Row gutter={16}>                              
                                 <Col span={12}>                  
                                 <Form.Item
@@ -264,7 +297,7 @@ function handleChangeServicio(value) {
                               label="Días"
                               rules={[
                                 {
-                                  required: true,
+                                  //required: true,
                                   message: 'Ingresá al menos un día',
                                 },
                               ]}>
@@ -272,7 +305,7 @@ function handleChangeServicio(value) {
                                       mode="multiple"
                                       style={{ width: '100%' }}
                                       placeholder="Seleccioná tus días de atención"
-                                      onChange={handleChange}
+                                      onChange={handleChangeDias}
                                       optionLabelProp="label"
                                     >
                                       <Option value="lunes" label="Lunes">
@@ -311,14 +344,12 @@ function handleChangeServicio(value) {
                                         </div>
                                       </Option>
                                     </Select>
-                                      <Form.Item label="Horario">
-                                        <RangePicker format= "HH:mm"></RangePicker>
-                                      </Form.Item>
                                     </Form.Item>
                                     </Col>
-                                  </Row> */}
+                                  </Row>
                                   <Button onClick={setZona3} type="primary" htmlType="submit" >Guardar Zona</Button>
                                   <Button onClick={setServ} type="primary" htmlType="submit" >Guardar Servicio</Button>
+                                  <Button onClick={setDias} type="primary" htmlType="submit" >Guardar Dias</Button>
                                 </Form>
                     </div>
                       {/* <Button type="primary" onClick={showDrawer}>Configuración de perfil</Button>
