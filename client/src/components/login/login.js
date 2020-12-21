@@ -6,7 +6,6 @@ import Axios from 'axios';
 
 
 
-
 const { Content} = Layout;
 
 const layout = {
@@ -50,11 +49,7 @@ const layout = {
       console.log(collapsed);
       this.setState({ collapsed });
       };
-
-    
-
-
-
+  
     function Login (a, b) {
 
       const [emailLogin1, setEmailLogin] = useState("");
@@ -73,17 +68,27 @@ const layout = {
           if (response.data.message) {
             setLoginStatus(response.data.message);            
           } else {
-            setLoginStatus(response.data[0].email);
-            setUserInfo(response.data);
-            console.log(a);
-            console.log(b);            
-            localStorage.setItem('user', response.data[0].ID);
-            a.history.push('./HomePartner')
-            //<Link to={`/HomePartner/${setLoginStatus(response.data[0].ID)}`}></Link>                      
+            if(response.data[0].tipo == 0) {
+              setLoginStatus(response.data[0].email);
+              setUserInfo(response.data);
+              console.log(a);
+              console.log(b);            
+              localStorage.setItem('user',response.data[0].ID);
+              a.history.push('./HomePartner')
+              //<Link to={`/HomePartner/${setLoginStatus(response.data[0].ID)}`}></Link>
+            }
+            else{
+              setLoginStatus(response.data[0].email);
+              setUserInfo(response.data);
+              console.log(a);
+              console.log(b);            
+              localStorage.setItem('user',response.data[0].ID);
+              a.history.push('./HomeClient')
+            }
+                                  
           }
-        });
+        }).catch(e => console.log('ERROR', e));
       };
-
     return (
         <Layout style={{ minHeight: '75vh' }}>
             
@@ -101,85 +106,67 @@ const layout = {
                                     <Breadcrumb.Item>Bienvenido</Breadcrumb.Item>
                                     <Breadcrumb.Item>Login</Breadcrumb.Item>
                                 </Breadcrumb>
-            <div className="site-layout-background" style={{ width: 500, padding: 20, minHeight: 360 }}>
-               
+            <div className="site-layout-background" style={{ width: 500, padding: 20, minHeight: 360 }}>        
             <Form
-        {...layout}
-        name="basic"
-        initialValues={{
-        remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-    >
-        <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-            {
-            required: true,
-            message: 'Ingresá tu email',
-            },
-        ]}
-        >
-        <Input onChange={(e) => {
-          setEmailLogin(e.target.value);}}/>
-        </Form.Item>
+                  {...layout}
+                  name="basic"
+                  initialValues={{
+                  remember: true,
+                  }}
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+            >
+                  <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                  {
+                  required: true,
+                  message: 'Ingresá tu email',
+                  },
+                  ]}
+                >
+                <Input onChange={(e) => {setEmailLogin(e.target.value);}}/>
+                </Form.Item>
 
-        <Form.Item
-        label="Contraseña"
-        name="password"
-        rules={[
-            {
-            required: true,
-            message: 'Ingresá tu contraseña',
-            },
-        ]}
-        >
-        <Input.Password onChange={(e) => {
-          setPwLogin(e.target.value);}}/>
-        </Form.Item>
+                <Form.Item
+                  label="Contraseña"
+                  name="password"
+                  rules={[
+                  {
+                  required: true,
+                  message: 'Ingresá tu contraseña',
+                  },
+                  ]}
+                >
+                <Input.Password onChange={(e) => {setPwLogin(e.target.value);}}/>
+              </Form.Item>
 
-        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Recordarme</Checkbox>
-        </Form.Item>
+              <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                  <Checkbox>Recordarme</Checkbox>
+              </Form.Item>
 
-        <Form.Item {...tailLayout}>
-        
-          <Button type="primary" htmlType="submit" onClick={Ingresar}>Ingresar</Button>
-        
-        </Form.Item>
-    </Form>
+              <Form.Item {...tailLayout}>
+                  <Button type="primary" htmlType="submit" onClick={Ingresar}>Ingresar</Button>
+              </Form.Item>
+            </Form>
             </div>
-            <h1>{loginStatus}</h1>            
-            </Content>
-            </login>
-            
-
-                        </main>
-
-        <div class="related-post">
-          
+                  <h1>{loginStatus}</h1>            
+                  </Content>
+                  </login>
+            </main>
+        <div class="related-post">       
             <h1>En la comodidad de tu casa</h1>
-
         </div>
         <div class="related-post">
-            
-        <h1>Cuando quieras. Como quieras</h1>
+            <h1>Cuando quieras. Como quieras</h1>
         </div>
         <div class="related-post">
-        <h1>El mejor precio del mercado</h1>
+            <h1>El mejor precio del mercado</h1>
         </div>
-
-
-        
-
         </div>
-        
 
         </Layout>
     );
-    
 }
-
 export default Login;
