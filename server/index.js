@@ -53,7 +53,7 @@ app.get("/api/get", (req, res)=>{
 // });
 
 
-app.get("/api/get-user-info", (req, res)=>{
+app.post("/api/get-user-info", (req, res)=>{
     const userid = req.body.userid
 
     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";

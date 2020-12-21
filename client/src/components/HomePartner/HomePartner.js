@@ -11,7 +11,7 @@ const { Meta } = Card;
 const { Option } = Select;
 const { RangePicker } = TimePicker;
 
-var cat = localStorage.getItem('user');
+
 
 function onChange(checkedValues) {
     console.log('checked = ', checkedValues);
@@ -19,13 +19,12 @@ function onChange(checkedValues) {
 
 function handleChange(value) {
 console.log(`selected ${value}`);
-}
-
-
-  
+}  
   
 
 function HomePartner () {
+
+    var cat = localStorage.getItem('user');
 
     const state = { visible: false };
   
@@ -45,7 +44,7 @@ function HomePartner () {
     
 
     useEffect(()=>{
-          Axios.get("http://localhost:3001/api/get-user-info", {
+          Axios.post("http://localhost:3001/api/get-user-info", {
             userid: cat,
           }).then((response) => {
             console.log(response);
@@ -60,7 +59,8 @@ function HomePartner () {
                 <main class="content">
                     <landing class="landing">
                         <Content style={{ borderColor: 'red', margin: '0 16px',color:"black" }}>
-                        <h1>{cat} ¡Bienvenido a Go Beauty!</h1>
+                        <h1>¡Bienvenido a Go Beauty!</h1>
+                        
                         </Content>
                     </landing>
                     <div id="grid">
@@ -81,8 +81,15 @@ function HomePartner () {
                                 >
                                     <Meta
                                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                    title="Nombre y Apellido"
-                                    description= {<div><p>DNI:</p><p>Sexo:</p><p>Fecha de nacimiento:</p><p>Teléfono:</p><p>Email:</p><p>Calificación:</p></div>}
+                                    title={usuario.map((val, key) => {
+                                      return (
+                                        <h1>{val.nombre} {val.apellido}</h1>
+                                      )                        })}
+                                    description= {<div>
+                                      <p>DNI: {usuario.map((val, key) => {
+                                      return (
+                                        <p>{val.documento}</p>)})}</p>
+                                      <p>Sexo:</p><p>Fecha de nacimiento:</p><p>Teléfono:</p><p>Email:</p><p>Calificación:</p></div>}
                                     />
                                 </Card>
                                 </div>
