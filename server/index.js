@@ -7,7 +7,7 @@ const cors = require('cors')
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '.Caray199.',
+    password: 'Fdbenedetto17',
     database: 'gobeauty',
 });
 
@@ -33,40 +33,31 @@ app.post("/api/login", (req, res)=>{
     });
 });
 
-app.get("/api/get", (req, res)=>{
-    const sqlSelectPrestadores = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE tipo = 0 OR tipo = 1";
+app.get("/api/getPartner", (req, res)=>{
+    const sqlSelectPrestadores = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE tipo = 0";
     db.query(sqlSelectPrestadores, (err, result) => {
         console.log(result)
-        res.send(result);
+        res.send(result); 
     });
 });
 
+// app.post("/api/get-user-info", (req, res)=>{
 
-app.post("/api/get-user-info", (req, res)=>{
+//     const userid = req.body.userid;
+
+//     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";
+//     db.query(sqlSelectUser, [userid], (err, result) => {
+//         console.log(result)
+//         res.send(result);
+//     });
+// });
+
+
+app.get("/api/get-user-info", (req, res)=>{
     const userid = req.body.userid
 
     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";
     db.query(sqlSelectUser, [userid], (err, result) => {
-        console.log(result)
-        res.send(result);
-    });
-});
-
-app.post("/api/get-user-zones", (req, res)=>{
-    const userid = 25
-
-    const sqlSelectZoneUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
-    db.query(sqlSelectZoneUser, [userid], (err, result) => {
-        console.log(result)
-        res.send(result);
-    });
-});
-
-app.post("/api/get-user-services", (req, res)=>{
-    const userid = 25
-
-    const sqlSelectServiceUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
-    db.query(sqlSelectServiceUser, [userid], (err, result) => {
         console.log(result)
         res.send(result);
     });
@@ -109,33 +100,6 @@ app.post("/api/insert-cliente", (req, res)=> {
 
     const sqlInsertCliente = "INSERT INTO usuarios (nombre, apellido, sexo, documento, email, fecha_nac, telefono, pw, calificacion, tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sqlInsertCliente, [nombre, apellido, sexo, documento, email, fecha_nac, telefono, pw, calificacion, tipo], (err, result) => {
-        console.log(result)
-        console.log(err)
-
-    });
-});
-
-app.post("/api/set-zones", (req, res)=> {
-
-    const userid = 25
-    const zona = req.body.zona
-
-    const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion) VALUES (?, ?)";
-    db.query(sqlInsertZona, [userid, zona], (err, result) => {
-        console.log(result)
-        console.log(err)
-
-    });
-});
-
-app.post("/api/set-services", (req, res)=> {
-
-    const id_usuario = 25
-    const descripcion = req.body.descripcion
-    const tarifa = req.body.tarifa
-
-    const sqlInsertServicio = "INSERT INTO servicios (id_usuario, descripcion, tarifa) VALUES (?, ?, ?)";
-    db.query(sqlInsertServicio, [id_usuario, descripcion, tarifa], (err, result) => {
         console.log(result)
         console.log(err)
 

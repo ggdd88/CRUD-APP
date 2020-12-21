@@ -14,7 +14,7 @@ class HeaderEjemplo extends React.Component {
             <div className="site-page-header-ghost-wrapper">
             <PageHeader style={{textAlign: "right",color: "black" }}
               extra={[
-                <div class="logo"><Link to="/home"><img src="/logo_header.png"/></Link></div>,
+                <Link to="/home"><img src="/logo_header.png"/></Link>,
                 <Button type="primary"><Link to="/signup"> Quiero ser parte de Go Beauty</Link></Button>,
                 <Button textAlign="left" type="primary"><Link to="/signupClient"> Registrarse </Link></Button>
                 ]}

@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import { Rate, Avatar, Drawer, List, Divider, Col, Row, Button,} from 'antd';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import './homeclient.css' 
 
 const {Content} = Layout;
 
@@ -11,14 +12,12 @@ function HomeClient() {
     const [prestadoresList, setPrestadores] = useState([]);
 
     useEffect(()=>{
-          Axios.get("http://localhost:3001/api/get").then((response) => {
-            console.log(response);
-            setPrestadores(response.data);
+          Axios.get("http://localhost:3001/api/getPartner").then((response) => {
+                console.log(response);
+                setPrestadores(response.data);
           });      
     }, []);
-
     
-
     const data = [...prestadoresList];
 
     const [visible, setVisible] = useState(false);
@@ -31,7 +30,7 @@ function HomeClient() {
 
 
     return (
-        <Layout style = {{ minHeight: '10vh' }}>
+        <Layout style = {{ minHeight: '10vh'}}>
             <Layout className = "site-layout" ></Layout>
             <div class="container">
                 <main class="content">
@@ -77,8 +76,7 @@ function HomeClient() {
                                     </Drawer> 
                                 </List.Item>
                                 )}
-                            />                                                                          
-                               
+                            />                                                                                                        
                         </div>                      
                 </main>
             </div>  
