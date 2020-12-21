@@ -1,0 +1,29 @@
+/* #container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 208px;
+    justify-content: right;
+    align-content: space-between;
+  }
+
+  .create-route {
+    width: 500px;
+    flex: 0 1 50px;
+
+    font-weight: bold;
+    text-align: right;
+  } */
+
+  #grid {
+    padding: 10px;
+    float: left;
+    width: 30%; 
+    text-align: justify;
+  }
+  #grid_2 {
+    padding: 10px;
+    float: right;
+    width: 65%; 
+    text-align: justify;
+  }
