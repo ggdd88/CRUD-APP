@@ -8,6 +8,7 @@ import signupSuccess from './components/signupSuccess';
 import signupClientSuccess from './components/signupClientSuccess';
 import HomeClient from './components/HomeClient';
 import HomePartner from './components/HomePartner';
+import contractSuccess from './components/contractSuccess';
 
 
 const Routes = () => {
@@ -21,6 +22,7 @@ const Routes = () => {
                 <Route exact path="/signupClientSuccess" component={signupClientSuccess} />
                 <Route exact path="/HomeClient" component={HomeClient} />
                 <Route exact path="/HomePartner" component={HomePartner} />
+                <Route exact path="/contractSuccess" component={contractSuccess} />
                 <Route path="/" component={login} />
             </Switch>
         </App>

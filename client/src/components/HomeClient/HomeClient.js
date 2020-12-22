@@ -13,7 +13,7 @@ function HomeClient() {
 
     useEffect(()=>{
           Axios.get("http://localhost:3001/api/getPartner").then((response) => {
-                console.log(response);
+                console.log(response.data);
                 setPrestadores(response.data);
           });      
     }, []);
@@ -53,7 +53,7 @@ function HomeClient() {
                                             {<div>
                                                 <h1>{item.nombre} {item.apellido}</h1>
                                                 <p>Promedio de valoraciones:</p>
-                                                <Rate disabled defaultValue={3} />
+                                                <Rate disabled defaultValue={4} />
                                             </div>}                                       
                                     />
                                     <Button type="primary" onClick={showDrawer}>Ver perfil</Button>
@@ -67,12 +67,9 @@ function HomeClient() {
                                     >
                                         <h2>Promedio de valoraciones:</h2>
                                         <Rate disabled defaultValue={3} />
-                                        <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />
-                                        <p>Fecha de nacimiento: {item.fecha_nac}</p>
-                                        <p>Documento: {item.documento}</p>
-                                        <p>Sexo: {item.sexi}</p>
+                                        <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
                                         <h1>Servicios</h1>
-                                        <Button type="primary" onClick={onClose}>Contratar</Button>
+                                        <Button type="primary" onClick={onClose}><Link to="/contractSuccess">Contratar</Link></Button>
                                     </Drawer> 
                                 </List.Item>
                                 )}

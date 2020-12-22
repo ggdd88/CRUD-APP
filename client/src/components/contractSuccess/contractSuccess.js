@@ -2,12 +2,12 @@ import React from 'react';
 import { Layout, Result, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
-    class signupSuccess extends React.Component {
+    class contractSuccess extends React.Component {
     state = {
     collapsed: false,
     };
 
-    onCollapse = collapsed => {
+    onCollapse = collapsed => { 
     console.log(collapsed);
     this.setState({ collapsed });
     };
@@ -22,9 +22,9 @@ import { Link } from 'react-router-dom';
             <Layout className="site-layout"></Layout>
                 <div class="container">
                     <main class="content">
-                    <Result style={{ margin: 153, minHeight: '35vh' }} status="success" title="¡Te has dado de alta como prestador de Go Beauty!" subTitle="Necesitamos que confirmes la registración desde el correo que hemos enviado a tu casilla." 
+                    <Result style={{ margin: 153, minHeight: '35vh' }} status="success" title="¡Felicitaciones, ha contrado un servicio!" subTitle="Necesitamos que confirmes la registración desde el correo que hemos enviado a tu casilla." 
                     extra={[
-      <Button type="primary" key="home"><Link to="/login">Loguearse</Link></Button>,
+      <Button type="primary" key="home"><Link to="/HomeClient">Ir al menú principal</Link></Button>,
     ]}
   />
           
@@ -35,4 +35,4 @@ import { Link } from 'react-router-dom';
     );
     }
 }
-export default signupSuccess;
+export default contractSuccess;
