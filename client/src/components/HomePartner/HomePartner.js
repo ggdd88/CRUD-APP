@@ -25,18 +25,6 @@ function HomePartner () {
 
     const state = { visible: false };
   
-    // const showDrawer = () => {
-    //   setState({
-    //     visible: true,
-    //   });
-    // };
-  
-    // const onClose = () => {
-    //   setState({
-    //     visible: false,
-    //   });
-    // };
-
     
 function handleChangeZona(value) {
   console.log(`selected ${value}`);
@@ -219,7 +207,7 @@ function handleChangeServicio(value) {
                             )                        })}
                       </Card>
                       <Card title="Días y horarios de atención" style={{ width: 750 }}>
-                      {zonasUsuario.map((val, key) => {
+                      {diasUsuario.map((val, key) => {
                             return (
                               <p>{val.descripcion}</p>
                             )                        })}
@@ -228,7 +216,7 @@ function handleChangeServicio(value) {
                       <h1>Seleccioná tus servicios</h1>
                           <Row gutter={16}>            
                             <Col span={12}>
-                                <Select defaultValue="Pelo" style={{ width: 120 }} onChange={handleChangeServicio}>
+                                <Select style={{ width: 120 }} onChange={handleChangeServicio}>
                                   <Option value="Pelo">Pelo</Option>
                                   <Option value="Barba">Barba</Option>
                                 </Select>
@@ -308,37 +296,37 @@ function handleChangeServicio(value) {
                                       onChange={handleChangeDias}
                                       optionLabelProp="label"
                                     >
-                                      <Option value="lunes" label="Lunes">
+                                      <Option value="Lunes" label="Lunes">
                                         <div className="demo-option-label-item">
                                           Lunes
                                         </div>
                                       </Option>
-                                      <Option value="martes" label="Martes">
+                                      <Option value="Martes" label="Martes">
                                         <div className="demo-option-label-item">
                                           Martes
                                         </div>
                                       </Option>
-                                      <Option value="miercoles" label="Miércoles">
+                                      <Option value="Miércoles" label="Miércoles">
                                         <div className="demo-option-label-item">
                                           Miércoles
                                         </div>
                                       </Option>
-                                      <Option value="jueves" label="Jueves">
+                                      <Option value="Jueves" label="Jueves">
                                         <div className="demo-option-label-item">
                                           Jueves
                                         </div>
                                       </Option>
-                                      <Option value="viernes" label="Viernes">
+                                      <Option value="Viernes" label="Viernes">
                                         <div className="demo-option-label-item">
                                           Viernes
                                         </div>
                                       </Option>
-                                      <Option value="sabado" label="Sábado">
+                                      <Option value="Sábado" label="Sábado">
                                         <div className="demo-option-label-item">
                                           Sábado
                                         </div>
                                       </Option>
-                                          <Option value="domingo" label="Domingo">
+                                          <Option value="Domingo" label="Domingo">
                                         <div className="demo-option-label-item">
                                           Domingo
                                         </div>
@@ -352,177 +340,7 @@ function handleChangeServicio(value) {
                                   <Button onClick={setDias} type="primary" htmlType="submit" >Guardar Dias</Button>
                                 </Form>
                     </div>
-                      {/* <Button type="primary" onClick={showDrawer}>Configuración de perfil</Button>
-                      <Drawer
-                        //title="Servicios"
-                        width={720}
-                        onClose={onClose}
-                        visible={state.visible}
-                        bodyStyle={{ paddingBottom: 80 }}
-                        footer={
-                          <div
-                            style={{
-                              textAlign: 'right',
-                            }}>
-                            <Button onClick={onClose} style={{ marginRight: 8 }}>
-                              Cancelar
-                            </Button>
-                            <Button onClick={onClose} type="primary">
-                              Guardar
-                            </Button>
-                          </div>}>
-                        <Form layout="vertical" hideRequiredMark>
-                        <h1>Seleccioná tus servicios</h1>
-                          <Row gutter={16}>            
-                            <Col span={12}>                  
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-                                  <Row>
-                                  <Col span={8}>
-                                      <Checkbox value="A">Pelo</Checkbox>
-                                  </Col>
-                                  <Form.Item
-                                name="tarifa"
-                                rules={[{ required: true, message: 'Ingresá la tarifa' }]}
-                              >
-                                <Input placeholder="Ingresá la tarifa" />
-                              </Form.Item>
-                                  </Row>
-                              </Checkbox.Group>
-                            </Col>
-                          </Row>
-                          <Row gutter={16}>            
-                            <Col span={12}>                  
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-                                  <Row>
-                                  <Col span={8}>
-                                      <Checkbox value="B">Barba</Checkbox>
-                                  </Col>
-                                  <Form.Item
-                                name="tarifa"
-                                rules={[{ required: true, message: 'Ingresá la tarifa' }]}
-                              >
-                                <Input placeholder="Ingresá la tarifa" />
-                              </Form.Item>
-                                  </Row>
-                              </Checkbox.Group>
-                            </Col>
-                          </Row>
-                            <h1>Seleccioná tus zonas de trabajo</h1>
-                          <Row gutter={16}>                          
-                            <Col span={12}>                  
-                              <Form.Item
-                                name="zone"
-                                //label="Zonas de trabajo"
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Ingresá al menos una zona',
-                                  },
-                                ]}>
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: '100%' }}
-                                    placeholder="Seleccioná tus zonas"
-                                    onChange={handleChange}
-                                    optionLabelProp="label"
-                                  >
-                                    <Option value="centro" label="Centro">
-                                      <div className="demo-option-label-item">
-                                        Centro
-                                      </div>
-                                    </Option>
-                                    <Option value="norte" label="Norte">
-                                      <div className="demo-option-label-item">
-                                        Norte
-                                      </div>
-                                    </Option>
-                                    <Option value="oeste" label="Oeste">
-                                      <div className="demo-option-label-item">
-                                        Oeste
-                                      </div>
-                                    </Option>
-                                    <Option value="noroeste" label="Noroeste">
-                                      <div className="demo-option-label-item">
-                                        Noroeste
-                                      </div>
-                                    </Option>
-                                    <Option value="sur" label="Sur">
-                                      <div className="demo-option-label-item">
-                                        Sur
-                                      </div>
-                                    </Option>
-                                    <Option value="sudoeste" label="Sudoeste">
-                                      <div className="demo-option-label-item">
-                                        Sudoeste
-                                      </div>
-                                    </Option>
-                                  </Select>
-                              </Form.Item>
-                                </Col>
-                              </Row>
-                              <h1>Seleccioná tus días y horarios de atención</h1>
-                              <Row gutter={16}>                              
-                                <Col span={12}>                  
-                                <Form.Item
-                              name="availability"
-                              label="Días"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: 'Ingresá al menos un día',
-                                },
-                              ]}>
-                                  <Select
-                                      mode="multiple"
-                                      style={{ width: '100%' }}
-                                      placeholder="Seleccioná tus días de atención"
-                                      onChange={handleChange}
-                                      optionLabelProp="label"
-                                    >
-                                      <Option value="lunes" label="Lunes">
-                                        <div className="demo-option-label-item">
-                                          Lunes
-                                        </div>
-                                      </Option>
-                                      <Option value="martes" label="Martes">
-                                        <div className="demo-option-label-item">
-                                          Martes
-                                        </div>
-                                      </Option>
-                                      <Option value="miercoles" label="Miércoles">
-                                        <div className="demo-option-label-item">
-                                          Miércoles
-                                        </div>
-                                      </Option>
-                                      <Option value="jueves" label="Jueves">
-                                        <div className="demo-option-label-item">
-                                          Jueves
-                                        </div>
-                                      </Option>
-                                      <Option value="viernes" label="Viernes">
-                                        <div className="demo-option-label-item">
-                                          Viernes
-                                        </div>
-                                      </Option>
-                                      <Option value="sabado" label="Sábado">
-                                        <div className="demo-option-label-item">
-                                          Sábado
-                                        </div>
-                                      </Option>
-                                          <Option value="domingo" label="Domingo">
-                                        <div className="demo-option-label-item">
-                                          Domingo
-                                        </div>
-                                      </Option>
-                                    </Select>
-                                      <Form.Item label="Horario">
-                                        <RangePicker format= "HH:mm"></RangePicker>
-                                      </Form.Item>
-                                    </Form.Item>
-                                    </Col>
-                                  </Row>
-                                </Form>
-                              </Drawer> */}
+                  
                             
                           </main>
                         </div>  

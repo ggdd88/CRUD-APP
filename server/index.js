@@ -62,6 +62,26 @@ app.post("/api/get-user-days", (req, res)=>{
     });
 });
 
+app.post("/api/get-user-zones", (req, res)=>{
+    const userid = 25
+
+    const sqlSelectServiceUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
+    db.query(sqlSelectServiceUser, [userid], (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
+app.post("/api/get-user-services", (req, res)=>{
+    const userid = 25
+
+    const sqlSelectServiceUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
+    db.query(sqlSelectServiceUser, [userid], (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
 
 app.post("/api/insert", (req, res)=> {
 
