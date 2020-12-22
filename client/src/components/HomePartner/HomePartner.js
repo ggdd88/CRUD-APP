@@ -163,12 +163,12 @@ function handleChangeServicio(value) {
                             <p>DNI: {usuario.map((val, key) => {
                             return (
                               <p>{val.documento}</p>)})}</p>
-                            <p>Sexo: {usuario.map((val, key) => {
+                            {/* <p>Sexo: {usuario.map((val, key) => {
                             return (
-                              <p>{val.sexo}</p>)})}</p>
-                            <p>Fecha de nacimiento: {usuario.map((val, key) => {
+                              <p>{val.sexo}</p>)})}</p> */}
+                            {/* <p>Fecha de nacimiento: {usuario.map((val, key) => {
                             return (
-                              <p>{val.fecha_nac}</p>)})}</p>
+                              <p>{val.fecha_nac}</p>)})}</p> */}
                             <p>Teléfono: {usuario.map((val, key) => {
                             return (
                               <p>{val.telefono}</p>)})}</p>
