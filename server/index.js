@@ -53,7 +53,7 @@ app.post("/api/get-user-info", (req, res)=>{
 });
 
 app.post("/api/get-user-days", (req, res)=>{
-    const userid = 25
+    const userid = req.body.userid
 
     const sqlSelectServiceUser = "SELECT descripcion FROM dias WHERE ID_usuario = ?";
     db.query(sqlSelectServiceUser, [userid], (err, result) => {
@@ -63,17 +63,17 @@ app.post("/api/get-user-days", (req, res)=>{
 });
 
 app.post("/api/get-user-zones", (req, res)=>{
-    const userid = 25
+    const userid = req.body.userid_
 
-    const sqlSelectServiceUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
-    db.query(sqlSelectServiceUser, [userid], (err, result) => {
+    const sqlSelectZoneUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
+    db.query(sqlSelectZoneUser, [userid], (err, result) => {
         console.log(result)
         res.send(result);
     });
 });
 
 app.post("/api/get-user-services", (req, res)=>{
-    const userid = 25
+    const userid = req.body.userid
 
     const sqlSelectServiceUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
     db.query(sqlSelectServiceUser, [userid], (err, result) => {
@@ -127,7 +127,7 @@ app.post("/api/insert-cliente", (req, res)=> {
 
 app.post("/api/set-zones", (req, res)=> {
 
-    const userid = 25
+    const userid = req.body.userid
     const zona = req.body.zona
 
     const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion) VALUES (?, ?)";
@@ -140,7 +140,7 @@ app.post("/api/set-zones", (req, res)=> {
 
 app.post("/api/set-services", (req, res)=> {
 
-    const id_usuario = 25
+    const id_usuario = req.body.id_usuario
     const descripcion = req.body.descripcion
     const tarifa = req.body.tarifa
 
@@ -154,7 +154,7 @@ app.post("/api/set-services", (req, res)=> {
 
 app.post("/api/set-dias", (req, res)=> {
 
-    const id_usuario = 25
+    const id_usuario = req.body.id_usuario
     const descripcion = req.body.descripcion
 
     const sqlInsertDias = "INSERT INTO dias (id_usuario, descripcion) VALUES (?, ?)";

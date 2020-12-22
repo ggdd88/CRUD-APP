@@ -62,9 +62,9 @@ function handleChangeServicio(value) {
 
     useEffect(()=>{
       Axios.post("http://localhost:3001/api/get-user-zones", {
-        userid: cat,
+        userid_: cat,
       }).then((response) => {
-        console.log(response);
+        console.log(response.data);
         setZonasUsuario(response.data);
       });      
 }, [])
@@ -96,11 +96,7 @@ function handleChangeServicio(value) {
 
     const setZona3 = () => {
       Axios.post("http://localhost:3001/api/set-zones", {
-        userid: usuario.map((val) => {
-          return (
-            <h1>{val.id}</h1>
-          );
-        }), 
+        userid: cat, 
         zona: zone,      
       });
       // setZona2([...zonaList, { userid: userid, zona: zone, }      
@@ -115,11 +111,7 @@ function handleChangeServicio(value) {
 
     const setServ = () => {
       Axios.post("http://localhost:3001/api/set-services", {
-        id_usuario: usuario.map((val) => {
-          return (
-            <h1>{val.id}</h1>
-          );
-        }), 
+        id_usuario: cat, 
         descripcion: descripcion,  
         tarifa: tarifa,
     
@@ -132,11 +124,7 @@ function handleChangeServicio(value) {
 
     const setDias = () => {
       Axios.post("http://localhost:3001/api/set-dias", {
-        id_usuario: usuario.map((val) => {
-          return (
-            <h1>{val.id}</h1>
-          );
-        }), 
+        id_usuario: cat, 
         descripcion: descripcionDias,   
       });
     };
@@ -194,38 +182,32 @@ function handleChangeServicio(value) {
                       </Card>
                     </div>                      
                     <div id="grid_2">
-                      <Card title="Servicios" style={{ width: 750 }}>
+                      <Card style={{marginBottom: 25 }} title="Servicios" style={{ width: 750 }}>
                       {serviciosUsuario.map((val, key) => {
                             return (
                               <p>{val.descripcion} $ {val.tarifa}</p>
                             )                        })}
                       </Card>
-                      <Card title="Zonas de trabajo" style={{ width: 750 }}>
-                      {zonasUsuario.map((val, key) => {
-                            return (
-                              <p>{val.descripcion}</p>
-                            )                        })}
-                      </Card>
-                      <Card title="Días y horarios de atención" style={{ width: 750 }}>
-                      {diasUsuario.map((val, key) => {
-                            return (
-                              <p>{val.descripcion}</p>
-                            )                        })}
-                      </Card>
-                      <Form layout="vertical" hideRequiredMark>
                       <h1>Seleccioná tus servicios</h1>
-                          <Row gutter={16}>            
+                          <Row style={{marginBottom: 25 }} gutter={16}>            
                             <Col span={12}>
                                 <Select style={{ width: 120 }} onChange={handleChangeServicio}>
                                   <Option value="Pelo">Pelo</Option>
                                   <Option value="Barba">Barba</Option>
                                 </Select>
-                                <Input placeholder="Ingresá la tarifa" onChange={(e) => {
+                                <Input style={{width: 120, marginLeft: 29 }} placeholder="Ej.: $450" onChange={(e) => {
                                   setTarifa(e.target.value)}} />
                             </Col>
+                            <Button onClick={setServ} type="primary" htmlType="submit" >Guardar Servicio</Button>
                           </Row>
-                            <h1>Seleccioná tus zonas de trabajo</h1>
-                          <Row gutter={16}>                          
+                      <Card style={{marginBottom: 25 }} title="Zonas de trabajo" style={{ width: 750 }}>
+                      {zonasUsuario.map((val, key) => {
+                            return (
+                              <p>{val.descripcion}</p>
+                            )                        })}
+                      </Card>
+                      <h1>Seleccioná tus zonas de trabajo</h1>
+                          <Row style={{marginBottom: 25 }} gutter={16}>                          
                             <Col span={12}>                  
                               <Form.Item
                                 name="zone"
@@ -239,7 +221,7 @@ function handleChangeServicio(value) {
                                 <Select
                                     mode="multiple"
                                     style={{ width: '100%' }}
-                                    placeholder="Seleccioná tus zonas"
+                                    placeholder="Ej.: Centro"
                                     onChange={handleChangeZona}
                                     optionLabelProp="label"
                                   >
@@ -276,13 +258,20 @@ function handleChangeServicio(value) {
                                   </Select>
                               </Form.Item>
                                 </Col>
+                                <Button style={{marginLeft: 29}} onClick={setZona3} type="primary" htmlType="submit" >Guardar Zona</Button>
                               </Row>
-                              <h1>Seleccioná tus días de atención</h1>
+                      <Card style={{marginBottom: 25 }} title="Días y horarios de atención" style={{ width: 750 }}>
+                      {diasUsuario.map((val, key) => {
+                            return (
+                              <p>{val.descripcion}</p>
+                            )                        })}
+                      </Card>
+                      <h1>Seleccioná tus días de atención</h1>
                               <Row gutter={16}>                              
                                 <Col span={12}>                  
                                 <Form.Item
                               name="availability"
-                              label="Días"
+                              //label="Días"
                               rules={[
                                 {
                                   //required: true,
@@ -334,10 +323,15 @@ function handleChangeServicio(value) {
                                     </Select>
                                     </Form.Item>
                                     </Col>
+                                    <Button style={{marginLeft: 29}}  onClick={setDias} type="primary" htmlType="submit" >Guardar Dias</Button>
                                   </Row>
-                                  <Button onClick={setZona3} type="primary" htmlType="submit" >Guardar Zona</Button>
-                                  <Button onClick={setServ} type="primary" htmlType="submit" >Guardar Servicio</Button>
-                                  <Button onClick={setDias} type="primary" htmlType="submit" >Guardar Dias</Button>
+                      <Form layout="vertical" hideRequiredMark>
+                      
+                            
+                              
+                                  
+                                  
+                                  
                                 </Form>
                     </div>
                   
