@@ -219,7 +219,7 @@ function handleChangeServicio(value) {
                             )                        })}
                       </Card>
                       <Card title="Días y horarios de atención" style={{ width: 750 }}>
-                      {diasUsuario.map((val, key) => {
+                      {zonasUsuario.map((val, key) => {
                             return (
                               <p>{val.descripcion}</p>
                             )                        })}

@@ -7,7 +7,7 @@ const cors = require('cors')
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Fdbenedetto17',
+    password: '.Caray199.',
     database: 'gobeauty',
 });
 
@@ -41,19 +41,8 @@ app.get("/api/getPartner", (req, res)=>{
     });
 });
 
-// app.post("/api/get-user-info", (req, res)=>{
 
-//     const userid = req.body.userid;
-
-//     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";
-//     db.query(sqlSelectUser, [userid], (err, result) => {
-//         console.log(result)
-//         res.send(result);
-//     });
-// });
-
-
-app.get("/api/get-user-info", (req, res)=>{
+app.post("/api/get-user-info", (req, res)=>{
     const userid = req.body.userid
 
     const sqlSelectUser = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE ID = ?";
@@ -155,26 +144,6 @@ app.post("/api/set-dias", (req, res)=> {
 
     });
 });
-
-// app.delete("/api/delete/:movieName", (req, res) => {
-//     const name = req.params.movieName;
-//     const sqlDelete =
-//     "DELETE FROM movie_reviews WHERE movie_name = ?";
-
-//     db.query(sqlDelete, name, (err, result) => {
-//         if (err) console.log(err);
-//     });
-// });
-
-// app.put("/api/update", (req, res) => {
-//     const name = req.body.movieName;
-//     const review = req.body.movieReview;
-//     const sqlUpdate = "UPDATE movie_reviews SET movie_review = ? WHERE movie_name = ?";
-
-//     db.query(sqlUpdate, [review, name], (err, result) => {
-//         if (err) console.log(err);
-//     });
-// });
 
 app.listen(3001, () => {
     console.log("running on port 3001");
