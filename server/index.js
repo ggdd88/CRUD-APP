@@ -34,7 +34,7 @@ app.post("/api/login", (req, res)=>{
 });
 
 app.get("/api/getPartner", (req, res)=>{
-    const sqlSelectPrestadores = "SELECT ID, nombre, apellido, sexo, documento, email, fecha_nac, telefono, calificacion, tipo FROM usuarios WHERE tipo = 0";
+    const sqlSelectPrestadores = "  ";
     db.query(sqlSelectPrestadores, (err, result) => {
         console.log(result)
         res.send(result); 
@@ -81,7 +81,24 @@ app.post("/api/get-user-services", (req, res)=>{
         res.send(result);
     });
 });
+app.post("/api/get-prestador-services", (req, res)=>{
+    //const userid = req.body.userid
 
+    const sqlSelectServicesUser = "SELECT servicios.descripcion, servicios.tarifa, usuarios.nombre, usuarios.apellido  FROM servicios, usuarios WHERE ID_usuario = 38";
+    db.query(sqlSelectServicesUser, (err, result) => {
+        console.log(result)
+        res.send(result);
+    });
+});
+
+// app.post("/api/get-user-contrataciones", (req, res)=>{
+//     const userid = req.body.userid
+
+//     const sqlSelectContratacionesUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
+//     db.query(sqlSelectContratacionesUser, [userid], (err, result) => {
+//         console.log(result)
+//         res.send(result);
+//     });
 
 app.post("/api/insert", (req, res)=> {
 

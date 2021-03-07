@@ -24,7 +24,7 @@ import { Link } from 'react-router-dom';
                     <main class="content">
                     <Result style={{ margin: 153, minHeight: '35vh' }} status="success" title="¡Bienvenido a Go Beauty!" subTitle="Necesitamos que confirmes la registración desde el correo que hemos enviado a tu casilla." 
                     extra={[
-      <Button type="primary" key="home"><Link to="/HomeClient">Ir al menú principal</Link></Button>,
+      <Button type="primary" key="home"><Link to="/login">Loguearse</Link></Button>,
     ]}
   />
           

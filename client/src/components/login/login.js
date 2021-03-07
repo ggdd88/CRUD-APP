@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import ReactPlayer from "react-player"
 import { Layout, Breadcrumb, message } from 'antd';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
@@ -155,6 +156,7 @@ const layout = {
                   </Content>
                   </login>
             </main>
+
         <div class="related-post">       
             <h1>En la comodidad de tu casa</h1>
         </div>
@@ -164,6 +166,11 @@ const layout = {
         <div class="related-post">
             <h1>El mejor precio del mercado</h1>
         </div>
+        <div style={{textAlign: "center"}}>
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=ug50zmP9I7s"
+            />
+          </div>
         </div>
 
         </Layout>

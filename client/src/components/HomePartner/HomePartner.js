@@ -1,15 +1,14 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
-import { Card, Form, Input, Select, DatePicker, Rate, Avatar, TimePicker, Drawer, List, Divider, Checkbox, Col, Row, Button,} from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Card, Form, Input, Select, Rate, Avatar, Col, Row, Button,} from 'antd';
+import { EditOutlined, } from '@ant-design/icons';
 import Axios from 'axios';
 import './HomePartner.css';
 
 const {Content} = Layout;
 const { Meta } = Card;
 const { Option } = Select;
-const { RangePicker } = TimePicker;
+
 
 
 
