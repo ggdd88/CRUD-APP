@@ -105,6 +105,13 @@
     font-size: 3.5ch;
 }
 
+.container>.mkt {
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .container>.related-post:hover {
     cursor: pointer;
     color: #ffffff;

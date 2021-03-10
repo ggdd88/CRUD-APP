@@ -97,7 +97,7 @@ app.post("/api/get-prestador-services", (req, res)=>{
 app.post("/api/getContrataciones", (req, res)=>{
     const ID = req.body.ID
 
-    const sqlSelectContrataciones = "SELECT servicios_contratados.descripcion, servicios_contratados.tarifa, usuarios.nombre, usuarios.apellido, contrataciones.fecha  FROM servicios_contratados inner join contrataciones on servicios_contratados.ID_contratacion = contrataciones.ID_contratacion inner join usuarios on contrataciones.ID_cliente = usuarios.ID WHERE usuarios.ID = ?"; 
+    const sqlSelectContrataciones = "SELECT usuarios.nombre, usuarios.apellido, contrataciones.fecha, contrataciones.ID_contratacion, contrataciones.ID_cliente, contrataciones.ID_prestador FROM contrataciones inner join usuarios on contrataciones.ID_prestador = usuarios.ID WHERE contrataciones.ID_cliente = 38"; 
     db.query(sqlSelectContrataciones, [ID], (err, result) => {
         console.log(result)
         res.send(result);

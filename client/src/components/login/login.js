@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ReactPlayer from "react-player"
-import { Layout, Breadcrumb, message } from 'antd';
+import { Layout, Breadcrumb, message, Card } from 'antd';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
@@ -166,9 +166,9 @@ const layout = {
         <div class="related-post">
             <h1>El mejor precio del mercado</h1>
         </div>
-        <div style={{textAlign: "center"}}>
+        <div class="mkt">
             <ReactPlayer
-              url="https://www.youtube.com/watch?v=ug50zmP9I7s"
+              url="https://youtu.be/Q3Ygsb_Ds_s"
             />
           </div>
         </div>

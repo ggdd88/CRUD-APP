@@ -11,7 +11,7 @@ import './homeclient.css'
 
 const dataServ = [
     {
-      title: 'Libertad Mises',
+      title: 'Juan Doe',
     },
   ];
 
@@ -123,12 +123,28 @@ function HomeClient() {
                                 <Row gutter={16}>
                                 <Col span={6}>
                                 <List
+                                    grid={{ gutter: 16, column: 1 }}
+                                    dataSource={dataServ}
+                                    renderItem={item => (
+                                    <List.Item>
+                                        <Card title="Gastón Donati" style={{height: 253.5 }}>
+                                            <h1>Fecha:</h1>
+                                            <p>02/02/2021</p>
+                                            <p>Finalizado</p>
+                                        </Card>
+                                    </List.Item>
+                                    )}
+                                />
+                                </Col>
+                                <Col span={6}>
+                                <List
                                 grid={{ gutter: 16, column: 1 }}
                                 dataSource={dataServ}
                                 renderItem={item => (
                                 <List.Item>
-                                    <Card title={item.title}>                                
-                                    <h1>Estado:</h1>
+                                    <Card title="Gastón Donati">                                
+                                    <h1>Fecha:</h1>
+                                    <p>08/03/2021</p>
                                     <p>Pendiente de valoración</p>
                                     <Button type="primary" onClick={showModal}>Calificar servicio</Button>
                                         <Modal title="Calificar servicio" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width={1000}>
@@ -146,21 +162,7 @@ function HomeClient() {
                                 </List.Item>
                                 )}
                             />
-                                </Col>
-                                <Col span={6}>
-                                <List
-                                    grid={{ gutter: 16, column: 1 }}
-                                    dataSource={dataServ}
-                                    renderItem={item => (
-                                    <List.Item>
-                                        <Card title={item.title} style={{height: 218.5 }}>
-                                            <h1>Estado:</h1>
-                                            <p>Finalizado</p>
-                                        </Card>
-                                    </List.Item>
-                                    )}
-                                />
-                                </Col>
+                                </Col>                                
                                 <Col span={6}>
                                         <List
                                         grid={{ gutter: 16, column: 1 }}
@@ -168,7 +170,8 @@ function HomeClient() {
                                         renderItem={item => (
                                         <List.Item>
                                             <Card title={item.title}>
-                                                <h1>Estado:</h1>
+                                                <h1>Fecha:</h1>
+                                                <p>15/03/2021</p>
                                                 <p>Pendiente de pago</p>
                                                 <Button type="primary" href="https://www.mercadopago.com.ar/home">Pagar</Button>
                                             </Card>
@@ -190,21 +193,59 @@ function HomeClient() {
                             closable={false}
                             onClose={onClose}
                             visible={visible}
-                            width= "500px"
+                            width= "535px"
                         >   
                             <p>Edad: 32</p>
-
-                            <h2>Promedio de valoraciones:</h2>
+                            <div>
+                            <Row gutter={16}>
+                                <Col span={13}>
+                            <div className="Valoracion">
+                            <h2>Promedio de valoraciones:</h2>                            
+                            </div>
+                            </Col>
+                            <Col span={8}>
+                            <div className="Opinion">
                             <Rate disabled defaultValue={usuario.calificacion}/>
+                            </div>
+                            </Col>
+                            </Row>
+                            </div>
                             <Button type="default">Ver opiniones</Button>
                             <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
+                            <div>
+                            <Row gutter={16}>
+                                <Col span={8}>
+                            <div className="Servicios">
                             <h2>Servicios</h2>
                             {servicios.map(item =>(
                                 
                             <p>{item.descripcion} ${item.tarifa}</p>                                        
                             ))}
+                            
+                            </div>
+                            </Col>
+                            <Col span={8}>
+                            <div className="Zonas">
                             <h2>Zonas</h2>
-                            {/*      */}
+                            <p>Centro</p>
+                            <p>Norte</p>
+                            <p>Noroeste</p>
+                            </div>
+                            </Col>
+                            <Col span={8}>
+                            <div className="Dias">
+                            <h2>Dias</h2>
+                            <p>Jueves</p>
+                            <p>Viernes</p>
+                            <p>Sábado</p>
+                            </div>
+                            </Col>
+                            </Row>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
                             <form onSubmit={sendEmail}>
                                 <div className="row pt-5 mx-auto">
                                 <div className="col-8 form-group mx-auto">
