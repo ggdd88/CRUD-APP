@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { uniqBy } from 'lodash'
 import emailjs from "emailjs-com";
 import { Layout } from 'antd';
 import { Rate, Avatar, Drawer, List, Divider, Col, Row, Button, Card, Modal, Input} from 'antd';
@@ -53,12 +54,38 @@ function HomeClient() {
           });      
     }, []);
 
+
+    const [contratacion, setContratacion] = useState([]);
+    const [ID_prestador, setID_prestador] = useState('');
+    const [ID_cliente, setID_cliente] = useState('');
+    const [fecha, setfecha] = useState('');
+
+    const [usuario, setUsuario] = useState([]);
+    const [servicios, setServicios] = useState([]);
+    const data = uniqBy([...prestadoresList],"ID");
+    const data1 = [...prestadoresList];
+
+    //const data1 = [...prestadoresList].filter(x => x.id_usuario === usuario.ID);
+
+    const Contratar = () => {
+        Axios.post("http://localhost:3001/api/contratar", {
+          ID_prestador: ID_prestador, 
+          ID_cliente: ID_cliente,
+          fecha: fecha,     
+        });
+        setContratacion([...contratacion, { ID_prestador: ID_prestador, ID_cliente: ID_cliente, fecha: fecha, }      
+        ]);
+      };
     
-    const data = [...prestadoresList];
 
 
     const [visible, setVisible] = useState(false);
-    const showDrawer = () => {
+    const showDrawer = (item) => {
+        console.log('item', item);
+        console.log(data1);
+        setServicios(data1.filter(x => x.id_usuario === item.ID));
+        console.log(servicios);
+        setUsuario(item);
       setVisible(true);
     };
     const onClose = () => {
@@ -67,6 +94,8 @@ function HomeClient() {
 
     function sendEmail(e) {
         e.preventDefault();
+        onClose();
+        console.log(e.target);
 
     emailjs.sendForm('gmail', 'template_gobeauty', e.target, 'user_kIQmrzK3a2dDp8EZlsgBT')
         .then((result) => {
@@ -79,7 +108,9 @@ function HomeClient() {
 
 
     return (
+
         <Layout style = {{ minHeight: '10vh'}}>
+
             <Layout className = "site-layout" ></Layout>
             <div class="container">
                 <main class="content">
@@ -153,12 +184,59 @@ function HomeClient() {
                         </Content>
                     </landing>
                         <div>
-            
+                        <Drawer
+                            title= {<h1>Perfil de: {usuario.nombre} {usuario.apellido}</h1>}
+                            placement="right"
+                            closable={false}
+                            onClose={onClose}
+                            visible={visible}
+                            width= "500px"
+                        >   
+                            <p>Edad: 32</p>
+
+                            <h2>Promedio de valoraciones:</h2>
+                            <Rate disabled defaultValue={usuario.calificacion}/>
+                            <Button type="default">Ver opiniones</Button>
+                            <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
+                            <h2>Servicios</h2>
+                            {servicios.map(item =>(
+                                
+                            <p>{item.descripcion} ${item.tarifa}</p>                                        
+                            ))}
+                            <h2>Zonas</h2>
+                            {/*      */}
+                            <form onSubmit={sendEmail}>
+                                <div className="row pt-5 mx-auto">
+                                <div className="col-8 form-group mx-auto">
+                                        <input type="hidden" value={usuario.ID} onChange={(e) => {
+                                            setID_prestador(e.target.value)
+                                            }}/>
+                                    </div>
+                                    <div className="col-8 form-group mx-auto">
+                                        <input type="hidden" value={usuario.nombre} name="name"/>
+                                    </div>
+                                    <div className="col-8 form-group pt-2 mx-auto">
+                                    <input type="hidden" value={usuario.apellido} name="lastname"/>
+                                    </div>
+                                    <div className="col-8 form-group pt-2 mx-auto">
+                                    <input type="hidden" value={usuario.telefono} name="phone"/>
+                                    </div>
+                                    <div className="col-8 form-group pt-2 mx-auto">
+                                    <input type="hidden" value={usuario.email} name="email"/>
+                                    </div>
+                                    <div className="col-8 pt-3 mx-auto">
+                                        <input type="submit" className="btnContratar" value="Contratar" to="/contractSuccess" onClick={Contratar}></input>
+                                    </div>
+                                </div>
+                            </form>
+                        </Drawer>
                             <List
                                 itemLayout="horizontal"
                                 dataSource={data}
                                 renderItem={item => (
+                                    
                                     <List.Item>
+                                        {console.log(item)}
                                     <List.Item.Meta
                                     
                                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
@@ -170,44 +248,8 @@ function HomeClient() {
                                                 <Rate disabled defaultValue={item.calificacion} />
                                             </div>}
                                     />
-                                    <Button type="primary" onClick={showDrawer}>Ver perfil</Button>
-                                    <Drawer
-                                        title= {<h1>Perfil de: {item.nombre} {item.apellido}</h1>}
-                                        placement="right"
-                                        closable={false}
-                                        onClose={onClose}
-                                        visible={visible}
-                                        width= "500px"
-                                    >
-                                        <h2>Promedio de valoraciones:</h2>
-                                        <Rate disabled defaultValue={item.calificacion} />
-                                        <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
-                                        <h1>Servicios</h1>
-                                        <p>{item.descripcion} {item.tarifa}</p>                                        
-                                        <Button type="primary" onClick={onClose}><Link to="/contractSuccess">Contratar</Link></Button>
-                                        <form onSubmit={sendEmail}>
-                                            <div className="row pt-5 mx-auto">
-                                                <div className="col-8 form-group mx-auto">
-                                                    <input type="text" className="form-control" text="Gaston" placeholder="Name" name="name"/>
-                                                </div>
-                                                <div className="col-8 form-group pt-2 mx-auto">
-                                                    <input type="email" className="form-control" placeholder="Email Address" name="email"/>
-                                                </div>
-                                                <div className="col-8 form-group pt-2 mx-auto">
-                                                    <input type="text" className="form-control" placeholder="Subject" name="subject"/>
-                                                </div>
-                                                <div className="col-8 form-group pt-2 mx-auto">
-                                                    <input type="text" className="form-control" placeholder="to" name="to"/>
-                                                </div>
-                                                <div className="col-8 form-group pt-2 mx-auto">
-                                                    <textarea className="form-control" id="" cols="30" rows="8" placeholder="Your message" name="message"></textarea>
-                                                </div>
-                                                <div className="col-8 pt-3 mx-auto">
-                                                    <input type="submit" className="btn btn-info" value="Send Message"></input>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </Drawer> 
+                                    <Button type="primary" onClick={()=>showDrawer(item)}>Ver perfil</Button>
+                                     
                                 </List.Item>
                                 )}
                             />                                                                                                          

@@ -190,9 +190,11 @@ function handleChangeServicio(value) {
                       <h1>Seleccioná tus servicios</h1>
                           <Row style={{marginBottom: 25 }} gutter={16}>            
                             <Col span={12}>
-                                <Select style={{ width: 120 }} onChange={handleChangeServicio}>
+                                <Select style={{ width: 130 }} onChange={handleChangeServicio}>
                                   <Option value="Pelo">Pelo</Option>
                                   <Option value="Barba">Barba</Option>
+                                  <Option value="Esmaltado">Esmaltado</Option>
+                                  <Option value="Semipermanente">Semipermanente</Option>
                                 </Select>
                                 <Input style={{width: 120, marginLeft: 29 }} placeholder="Ej.: $450" onChange={(e) => {
                                   setTarifa(e.target.value)}} />
