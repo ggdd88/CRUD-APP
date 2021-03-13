@@ -176,10 +176,7 @@ const tailFormItemLayout = {
         }} buttonStyle="solid">
       <Radio.Button value="1">Masculino</Radio.Button>
       <Radio.Button value="2">Femenino</Radio.Button>
-
     </Radio.Group>
-
-
           </Form.Item>
           {/* <Form.Item
         name="borndate"
@@ -277,67 +274,6 @@ const tailFormItemLayout = {
           setPw(e.target.value)
         }} />
             </Form.Item>                               
-            {/* <Form.Item
-        name="tarifa"
-        label="Tarifa"
-        rules={[
-          {
-            
-            message: 'Ingresá una tarifa válida',
-          },
-          {
-            required: true,
-            message: 'Ingresá tu tarifa',
-          },
-        ]}
-      >
-        <Input type="text" name="tarifa" onChange={(e) => {
-          setTarifa(e.target.value)
-        }} />
-      </Form.Item> */}
-      {/* <Form.Item
-            name="type"
-            label="Tipo de servicio"
-            rules={[
-              {
-                
-                message: 'El tipo de servicio no es válido',
-              },
-              {
-                required: true,
-                message: 'Seleccioná tu tipo de servicio',
-              },
-            ]}
-          >
-                  <Radio.Group buttonStyle="solid">
-      <Radio.Button value="a">Barbería</Radio.Button>
-      <Radio.Button value="b">Estética de manos</Radio.Button>
-
-    </Radio.Group>
-
-
-          </Form.Item> */}
-            {/* <Form.Item label="Dirección">
-        <Input.Group compact>
-          <Form.Item
-            name={['address', 'city']}
-            noStyle
-            rules={[{ required: true, message: 'Ingresá tu Localidad' }]}
-          >
-            <Select placeholder="Localidad">
-              <Option value="Rosario">Rosario</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name={['address', 'street']}
-            noStyle
-            rules={[{ required: true, message: 'Ingresá tu calle y número' }]}
-          >
-            <Input style={{ width: '80%' }} placeholder="Calle y número" />
-            
-          </Form.Item>
-          </Input.Group>
-          </Form.Item> */}
             <Form.Item
             name="phone"
             label="Teléfono"
