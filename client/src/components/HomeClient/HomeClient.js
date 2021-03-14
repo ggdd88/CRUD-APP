@@ -1,18 +1,13 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { uniqBy } from 'lodash'
 import emailjs from "emailjs-com";
 import { Layout } from 'antd';
-import { Rate, Avatar, Drawer, List, Divider, Col, Row, Button, Card, Modal, Input} from 'antd';
+import { Rate, Avatar, Drawer, List, Col, Row, Button, Card, Modal, Input, DatePicker, Space} from 'antd';
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import Axios from 'axios';
-import './homeclient.css' 
-import { useHistory } from "react-router-dom";
-import { Redirect } from "react-router-dom"; 
-
-
-
-
+import './homeclient.css'
+// import 'moment/locale/es-AR';
+// import locale from 'antd/es/date-picker/locale/es-AR'; 
 
 
 const dataServ = [
@@ -20,6 +15,8 @@ const dataServ = [
       title: 'Juan Doe',
     },
   ];
+
+  const { RangePicker } = DatePicker;
 
   const customIcons = {
     1: <FrownOutlined />,
@@ -29,21 +26,20 @@ const dataServ = [
     5: <SmileOutlined />,
   };
 
-
 const {Content} = Layout;
 
 function HomeClient(props1) {
     const props = props1;
 
-
     var pat = localStorage.getItem('user');
 
     const [prestadoresList, setPrestadores] = useState([]);
     const [contratacionesList, setContrataciones] = useState([]);
+    const [opinionesList, setOpinionesList] = useState([]);
 
     const [opi, setOpinion] = useState([]);
     
-    //const [promedio, setPromedio] = useState([]);
+    const [promedio, setPromedio] = useState('');
     const [cal, setCalificacion] = useState([]);
     const [prestador_cal, setPrestador_cal] = useState('');
     const [contratacion_cal, setContratacion_cal] = useState('');
@@ -53,7 +49,6 @@ function HomeClient(props1) {
 
     const [ID_cliente, setID_cliente] = useState('');
 
-
     const [contratacion, setContratacion] = useState([]);
     const [ID_prestador, setID_prestador] = useState('');
     
@@ -62,14 +57,16 @@ function HomeClient(props1) {
     const [usuario, setUsuario] = useState([]);
     const [cc, setCC] = useState([]);
     const [servicios, setServicios] = useState([]);
-    const [modal, setModal] = useState([]);
+    const [zonas, setZonas] = useState([]);
+    const [dias, setDias] = useState([]);
     const data = uniqBy([...prestadoresList],"ID");
     const data1 = [...prestadoresList];
     const data_contrataciones = [...contratacionesList];
-    //const data_contrataciones_U = uniqBy([...contratacionesList],"ID_contratacion");
 
     const [visible, setVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const [isModalVisible_o, setIsModalVisible_o] = useState(false);
 
     useEffect(()=>{
         Axios.get("http://localhost:3001/api/getPartner").then((response) => {
@@ -87,6 +84,14 @@ function HomeClient(props1) {
       });      
 }, []);
 
+    function onChange(value, dateString) {
+        console.log('Selected Time: ', value);
+        console.log('Formatted Selected Time: ', dateString);
+    }
+    
+    function onOk(value) {
+        console.log('onOk: ', value);
+    }
   
     const showModal = (it) => {
         setCC(it);
@@ -99,20 +104,24 @@ function HomeClient(props1) {
     const handleOk = (cc) => { 
         setIsModalVisible(false);
         Calificar();
-        // Opinar();    
+        Opinar();    
     };
   
     const handleCancel = () => {
       setIsModalVisible(false);
     };
 
-
-
     const showDrawer = (item) => {
         setServicios(data1.filter(x => x.id_usuario === item.ID));
+        setZonas(data1.filter(x => x.ID_usuario === item.ID));
+        setDias(data1.filter(x => x.id_usuario_d === item.ID));
         setUsuario(item);
+        getOpiniones(item.ID);
+        console.log('it', item.ID);
+        //getPromedioCal(item.ID);
         setID_prestador(item.ID);      
       setVisible(true);
+
     };
 
 
@@ -121,7 +130,20 @@ function HomeClient(props1) {
 
     };
 
+    const showModal_o = () => {
+        setIsModalVisible_o(true);
+      };
+    
+      const handleOk_o = () => {
+        setIsModalVisible_o(false);
+      };
+    
+      const handleCancel_o = () => {
+        setIsModalVisible_o(false);
+      };
+
     const Contratar = () => {
+        console.log('fecha', fecha);
         Axios.post("http://localhost:3001/api/contratar", {
           ID_prestador: ID_prestador, 
           ID_cliente: pat,
@@ -147,19 +169,29 @@ function HomeClient(props1) {
         Axios.post("http://localhost:3001/api/opinar", {
             contratacion_cal: contratacion_cal,
             prestador_cal: prestador_cal, 
-            id_cliente: ID_cliente,
+            id_cliente: pat,
             opi_opi: opi_opi,     
           });
           setOpinion({ contratacion_cal: contratacion_cal, prestador_cal: prestador_cal, id_cliente: ID_cliente, opi_opi: opi_opi });
     };
 
-    // const getPromedioCal = () => {
+    // const getPromedioCal = (ID) => {
+    //     console.log('prom', ID);
     //     Axios.get("http://localhost:3001/api/promedioCal", {
-    //         id_prestador: pat,   
+    //         id_prestador: ID,   
     //       }).then((response) => {
     //         setPromedio(response.data);
-    // });
 
+    // })};
+
+    const getOpiniones = (ID) => {
+
+        Axios.get("http://localhost:3001/api/opinionesPrest", {
+        id_prestador: ID,   
+            }).then((response) => {
+        setOpinionesList(response.data);
+
+    })};
 
     function sendEmail(e) {
         e.preventDefault();
@@ -175,11 +207,8 @@ function HomeClient(props1) {
         e.target.reset()
     }
 
-
     return (
-
         <Layout style = {{ minHeight: '10vh'}}>
-
             <Layout className = "site-layout" ></Layout>
             <div class="container">
                 <main class="content">
@@ -189,8 +218,6 @@ function HomeClient(props1) {
                         </Content>
                     </landing>
                         <div className="site-card-wrapper">
-
-
                                 {/* <Col span={6}>
                                 <List
                                     grid={{ gutter: 16, column: 1 }}
@@ -222,7 +249,6 @@ function HomeClient(props1) {
                                     )}
                                 />
                                 </Col> */}
-
                                 <List
                                 grid={{ gutter: 16, column: 4 }}
                                 dataSource={data_contrataciones}
@@ -232,14 +258,12 @@ function HomeClient(props1) {
                                     description=
                                                 {<Card title={<p>{it.nombre} {it.apellido}</p>}>                                
                                                 <h1>Fecha:</h1>
-                                                <p>08/03/2021</p>
+                                                <p>{it.fecha}</p>
                                                 <p>Pendiente de valoración</p>
                                                 <Button type="primary" onClick={()=>showModal(it)}>Calificar servicio</Button>
-                                                </Card>}/>
-                                                
+                                                </Card>}/>                                                
                                     </List.Item>
-                                    )}/>
-                                    
+                                    )}/>                                    
                                     <Modal title="Calificar servicio" visible={isModalVisible} onOk={()=>handleOk(cc)} onCancel={handleCancel} width={1000}>
                                         <h1 style={{ textAlign   : 'center'}}>¿Como calificarías al prestador del servicio contratado?</h1>
                                         <p style={{ textAlign   : 'center'}}><Rate defaultValue={5} character={({ index }) => index + 1} />
@@ -250,11 +274,10 @@ function HomeClient(props1) {
                                         <br />    
                                         <h1 style={{ textAlign   : 'center'}}>Dejanos tu opinión acerca del prestador y del servicio</h1>
                                         <br />
-                                        <Input.TextArea style={{ textAlign   : 'center'}} rows="3" cols="10" />
-
+                                        <Input.TextArea onChange={(e) => {
+                                            setOpi_opi(e.target.value)
+                                            }} style={{ textAlign   : 'center'}} rows="3" cols="10" />
                                     </Modal>
-
-
                         </div>
                     <landing class="landing">
                         <Content style={{ borderColor: 'red', margin: '0 16px',color:"black" }}>
@@ -268,8 +291,7 @@ function HomeClient(props1) {
                             closable={false}
                             onClose={onClose}
                             visible={visible}
-                            width= "535px"
-                        >   
+                            width= "530px">   
                             <p>Edad: 32</p>
                             <div>
                             <Row gutter={16}>
@@ -280,55 +302,53 @@ function HomeClient(props1) {
                             </Col>
                             <Col span={8}>
                             <div className="Opinion">
-                            <Rate disabled defaultValue={usuario.calificacion}/>
+                            <Rate disabled defaultValue={promedio}/>
                             </div>
                             </Col>
                             </Row>
                             </div>
-                            <Button type="default">Ver opiniones</Button>
-                            <img width= "450px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
+                            <Button type="primary" onClick={showModal_o}>Ver opiniones</Button>
+                            <img width= "385px" src="https://image.freepik.com/vector-gratis/hombre-barbero-mascota-corte-barberia_165162-68.jpg" alt="" />                                                                               
                             <div>
                             <Row gutter={16}>
                                 <Col span={8}>
                             <div className="Servicios">
                             <h2>Servicios</h2>
-                            {servicios.map(item =>(
-                                
+                            {servicios.map(item =>(                                
                             <p>{item.descripcion} ${item.tarifa}</p>                                        
-                            ))}
-                            
+                            ))}                            
                             </div>
                             </Col>
                             <Col span={8}>
                             <div className="Zonas">
                             <h2>Zonas</h2>
-                            <p>Centro</p>
-                            <p>Norte</p>
-                            <p>Noroeste</p>
+                            {zonas.map(meti =>(                                
+                            <p>{meti.descripcion_z}</p>                                        
+                            ))}   
                             </div>
                             </Col>
                             <Col span={8}>
                             <div className="Dias">
                             <h2>Dias</h2>
-                            <p>Jueves</p>
-                            <p>Viernes</p>
-                            <p>Sábado</p>
+                            {dias.map(dia =>(                                
+                            <p>{dia.descripcion_d}</p>                                        
+                            ))}  
                             </div>
                             </Col>
                             </Row>
                             </div>
-                            <br/>
-                            <br/>
-                            <br/>
-                            <br/>
-                            
+                            <div className="Fecha">
+                            <h2>Elegí tu turno</h2>
+                            <Space direction="vertical" size={12}>
+                                <DatePicker format="DD-MM-YYYY-HH" showToday="true" showTime="true" onChange={onChange} onOk={onOk} 
+                                            onChange={(e) => {
+                                                setfecha(e) 
+                                                }}/>
+                            </Space>
+                            </div>
+                            <br/>                            
                             <form onSubmit={sendEmail} >
                                 <div className="row pt-5 mx-auto">
-                                {/* <div className="col-8 form-group mx-auto">
-                                        <input type="hidden" value={usuario.ID} onChange={(e) => {
-                                            setID_prestador(e.target.value)
-                                            }}/>
-                                    </div> */}
                                     <div className="col-8 form-group mx-auto">
                                         <input type="hidden" value={usuario.nombre} name="name"/>
                                     </div>
@@ -341,36 +361,33 @@ function HomeClient(props1) {
                                     <div className="col-8 form-group pt-2 mx-auto">
                                     <input type="hidden" value={usuario.email} name="email"/>
                                     </div>
-                                    <div className="col-8 pt-3 mx-auto" >
-                                    
-                                        <input type="submit" className="btnContratar" value="Contratar" name="Submit" id="frm1_submit" onClick={Contratar}></input>
-                                        
+                                    <div className="col-8 pt-3 mx-auto" >                                    
+                                        <input type="submit" className="btnContratar" value="Contratar" name="Submit" id="frm1_submit" onClick={Contratar}></input>                                        
                                     </div>                                    
                                 </div>
                             </form>
                         </Drawer>
+                        <Modal title="Opiniones" visible={isModalVisible_o} onOk={handleOk_o} onCancel={handleCancel_o}>
+                            <p>Some contents...</p>
+                            <p>{opinionesList}</p>
+                            {console.log('op',opinionesList)}
+                        </Modal>
                             <List
                                 itemLayout="horizontal"
                                 dataSource={data}
-                                renderItem={item => (
-                                    
+                                renderItem={item => (                                    
                                     <List.Item>
-                                        
-                                        
-                                    <List.Item.Meta
-                                    
-                                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                    title={<a href="https://ant.design">{item.title}</a>}
-                                    description= 
-                                            {<div>
-                                                <h1>{item.nombre} {item.apellido}</h1>
-                                                <p>Promedio de valoraciones:</p>
-                                                <Rate disabled defaultValue={item.calificacion} />
-                                            </div>}
-                                    />
-                                    
-                                    <Button type="primary" onClick={()=>showDrawer(item)}>Ver perfil</Button>
-                                     
+                                    <List.Item.Meta                                    
+                                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                        title={<a href="https://ant.design">{item.title}</a>}
+                                        description= 
+                                                {<div>
+                                                    <h1>{item.nombre} {item.apellido}</h1>
+                                                    <p>Promedio de valoraciones:</p>
+                                                    <Rate disabled defaultValue={item.calificacion} />
+                                                </div>}
+                                    />                                    
+                                    <Button type="primary" onClick={()=>showDrawer(item)}>Ver perfil</Button>                                     
                                 </List.Item>
                                 )}
                             />                                                                                                          
@@ -380,5 +397,5 @@ function HomeClient(props1) {
         </Layout>
     );
 }    
- 
+
 export default HomeClient;

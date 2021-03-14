@@ -74,8 +74,7 @@ const tailFormItemLayout = {
         pw: pw,
         calificacion: calificacion,      
       });
-      setPrestador([...prestadorList, { nombre: nombre, apellido: apellido, sexo: sexo, documento: documento, email: email, fecha_nac: fecha_nac, telefono: telefono, pw: pw, calificacion: calificacion, }      
-      ]);
+      setPrestador({ nombre: nombre, apellido: apellido, sexo: sexo, documento: documento, email: email, fecha_nac: fecha_nac, telefono: telefono, pw: pw, calificacion: calificacion });
     };
           
   const [form] = Form.useForm();

@@ -35,7 +35,7 @@ app.post("/api/login", (req, res)=>{
 
 app.get("/api/getPartner", (req, res)=>{
     //const sqlSelectPrestadores = "SELECT usuarios.ID, usuarios.nombre, usuarios.apellido, usuarios.sexo, usuarios.documento, usuarios.email, usuarios.fecha_nac, usuarios.telefono, usuarios.calificacion, usuarios.tipo, servicios.descripcion, servicios.tarifa FROM usuarios, servicios WHERE tipo = 0";
-    const sqlSelectPrestadores = "SELECT * FROM usuarios inner join servicios on usuarios.ID = servicios.id_usuario";
+    const sqlSelectPrestadores = "SELECT * FROM usuarios inner join servicios on usuarios.ID = servicios.id_usuario inner join zonas on usuarios.ID = zonas.ID_usuario inner join dias on usuarios.ID = dias.id_usuario_d";
     db.query(sqlSelectPrestadores, (err, result) => {
         console.log(result)
         res.send(result); 
@@ -53,11 +53,24 @@ app.post("/api/getContrataciones", (req, res)=>{
 });
 
 app.get("/api/promedioCal", (req, res)=>{
-    const id_prestador = 39
+ 
+    const id_prestador = req.body.id_prestador
 
     const sqlpromedioCal = "SELECT AVG(ALL calificacion) FROM calificaciones WHERE id_prestador = ?"; 
     db.query(sqlpromedioCal, [id_prestador], (err, result) => {
         console.log(result);
+        res.send(result);
+    });
+});
+
+app.get("/api/opinionesPrest", (req, res)=>{
+    console.log('REQ', req.body);
+    const id_prestador = req.body.id_prestador
+    console.log('id', req.body.id_prestador);
+
+    const sqlopinionesP = "SELECT opinion FROM opiniones WHERE id_prestador = ?"; 
+    db.query(sqlopinionesP, [id_prestador], (err, result) => {
+        console.log('op', result);
         res.send(result);
     });
 });
@@ -76,7 +89,7 @@ app.post("/api/get-user-info", (req, res)=>{
 app.post("/api/get-user-days", (req, res)=>{
     const userid = req.body.userid
 
-    const sqlSelectServiceUser = "SELECT descripcion FROM dias WHERE ID_usuario = ?";
+    const sqlSelectServiceUser = "SELECT descripcion_d FROM dias WHERE id_usuario_d = ?";
     db.query(sqlSelectServiceUser, [userid], (err, result) => {
         console.log(result)
         res.send(result);
@@ -86,7 +99,7 @@ app.post("/api/get-user-days", (req, res)=>{
 app.post("/api/get-user-zones", (req, res)=>{
     const userid = req.body.userid_
 
-    const sqlSelectZoneUser = "SELECT descripcion FROM zonas WHERE ID_usuario = ?";
+    const sqlSelectZoneUser = "SELECT descripcion_z FROM zonas WHERE ID_usuario = ?";
     db.query(sqlSelectZoneUser, [userid], (err, result) => {
         console.log(result)
         res.send(result);
@@ -159,7 +172,7 @@ app.post("/api/contratar", (req, res)=> {
 
     const ID_prestador = req.body.ID_prestador
     const ID_cliente = req.body.ID_cliente
-    const fecha = '2021-03-20'
+    const fecha = "2021-03-20"
     const cal_prestador = '0'
     const cal_cliente = '0'
 
@@ -187,11 +200,39 @@ app.post("/api/calificar", (req, res)=> {
     });
 });
 
+// app.post("/api/calificar", (req, res)=> {
+
+
+//     const id_contratacion = req.body.contratacion_cal
+//     const id_prestador = req.body.prestador_cal
+//     const id_cliente = req.body.id_cliente
+//     const calificacion = req.body.cal_cal
+
+//     const sqlCalificar = "INSERT INTO calificaciones (id_contratacion, id_prestador, id_cliente, calificacion) VALUES (?, ?, ?, ?)";
+//     db.query(sqlCalificar, [id_contratacion, id_prestador, id_cliente, calificacion], (err, result) => {
+//         console.log(result)
+//         console.log(err)    
+
+//     });
+//     const sqlpromCal = "SELECT AVG(ALL calificacion) FROM calificaciones WHERE id_prestador = ?"; 
+//     db.query(sqlpromCal, [id_prestador], (err, resultado) => {        
+//     });
+
+//     const calif = resultado
+
+//     const sqlInsertCal = "INSERT INTO usuarios (calificacion) VALUES (?) WHERE id_prestador = ?";
+//     db.query(sqlInsertCal, [calif, id_prestador], (err, result) => {
+//         console.log(result)
+//         console.log(err)
+
+//     });
+// });
+
 app.post("/api/opinar", (req, res)=> {
 
     const id_contratacion = req.body.contratacion_cal
     const id_prestador = req.body.prestador_cal
-    const id_cliente = 39
+    const id_cliente = req.body.id_cliente
     const opinion = req.body.opi_opi
 
     const sqlOpinar = "INSERT INTO opiniones (id_contratacion, id_prestador, id_cliente, opinion) VALUES (?, ?, ?, ?)";
@@ -207,7 +248,7 @@ app.post("/api/set-zones", (req, res)=> {
     const userid = req.body.userid
     const zona = req.body.zona
 
-    const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion) VALUES (?, ?)";
+    const sqlInsertZona = "INSERT INTO zonas (ID_usuario, descripcion_z) VALUES (?, ?)";
     db.query(sqlInsertZona, [userid, zona], (err, result) => {
         console.log(result)
         console.log(err)
@@ -234,7 +275,7 @@ app.post("/api/set-dias", (req, res)=> {
     const id_usuario = req.body.id_usuario
     const descripcion = req.body.descripcion
 
-    const sqlInsertDias = "INSERT INTO dias (id_usuario, descripcion) VALUES (?, ?)";
+    const sqlInsertDias = "INSERT INTO dias (id_usuario_d, descripcion_d) VALUES (?, ?)";
     db.query(sqlInsertDias, [id_usuario, descripcion], (err, result) => {
         console.log(result)
         console.log(err)

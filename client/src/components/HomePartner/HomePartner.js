@@ -18,19 +18,19 @@ function onChange(checkedValues) {
 
   
 
-function HomePartner () {
+  function HomePartner () {
 
     var cat = localStorage.getItem('user');
 
     const state = { visible: false };
   
     
-function handleChangeZona(value) {
+  function handleChangeZona(value) {
   console.log(`selected ${value}`);
   setZona(value);
   }  
 
-function handleChangeServicio(value) {
+  function handleChangeServicio(value) {
   console.log(`selected ${value}`);
   setDescripcion(value);
   }
@@ -38,7 +38,7 @@ function handleChangeServicio(value) {
   function handleChangeDias(value) {
     console.log(`selected ${value}`);
     setDias_(value);
-    }
+  }
 
 
   
@@ -46,7 +46,15 @@ function handleChangeServicio(value) {
     const [usuario, setUsuario] = useState([]);
     const [zonasUsuario, setZonasUsuario] = useState([]);
     const [serviciosUsuario, setServiciosUsuario] = useState([]);
-    const [diasUsuario, setDiasUsuario] = useState([]);
+    const [diasUsuario, setDiasUsuario] = useState([]);   
+
+
+    const [zone, setZona] = useState('');
+    const [zonaList, setZona2] = useState([]);    
+    const [tarifa, setTarifa] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [servicioList, setServicio] = useState([]);    
+    const [descripcionDias, setDias_] = useState('');
     
 
     useEffect(()=>{
@@ -87,12 +95,6 @@ function handleChangeServicio(value) {
     }, [])
 
 
-
-    const [zone, setZona] = useState('');
-
-    const [zonaList, setZona2] = useState([]);
-
-
     const setZona3 = () => {
       Axios.post("http://localhost:3001/api/set-zones", {
         userid: cat, 
@@ -101,12 +103,6 @@ function handleChangeServicio(value) {
       // setZona2([...zonaList, { userid: userid, zona: zone, }      
       // ]);
     };
-
-    const [tarifa, setTarifa] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-
-    const [servicioList, setServicio] = useState([]);
-
 
     const setServ = () => {
       Axios.post("http://localhost:3001/api/set-services", {
@@ -118,8 +114,6 @@ function handleChangeServicio(value) {
       // setServicio([...servicioList, { id_usuario: id_usuario, descripcion: descripcion, tarifa: tarifa }      
       // ]);
     };
-
-    const [descripcionDias, setDias_] = useState('');
 
     const setDias = () => {
       Axios.post("http://localhost:3001/api/set-dias", {
@@ -204,7 +198,7 @@ function handleChangeServicio(value) {
                       <Card style={{marginBottom: 25 }} title="Zonas de trabajo" style={{ width: 750 }}>
                       {zonasUsuario.map((val, key) => {
                             return (
-                              <p>{val.descripcion}</p>
+                              <p>{val.descripcion_z}</p>
                             )                        })}
                       </Card>
                       <h1>Seleccioná tus zonas de trabajo</h1>
@@ -264,7 +258,7 @@ function handleChangeServicio(value) {
                       <Card style={{marginBottom: 25 }} title="Días y horarios de atención" style={{ width: 750 }}>
                       {diasUsuario.map((val, key) => {
                             return (
-                              <p>{val.descripcion}</p>
+                              <p>{val.descripcion_d}</p>
                             )                        })}
                       </Card>
                       <h1>Seleccioná tus días de atención</h1>

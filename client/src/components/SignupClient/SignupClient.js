@@ -72,8 +72,7 @@ const SignupClient = () => {
         calificacion: calificacion,
         tipo: tipo,      
       });
-      setCliente([...clienteList, { nombre: nombre, apellido: apellido, sexo: sexo, documento: documento, email: email, fecha_nac: fecha_nac, telefono: telefono, pw: pw, calificacion: calificacion, tipo: tipo, }      
-      ]);
+      setCliente({ nombre: nombre, apellido: apellido, sexo: sexo, documento: documento, email: email, fecha_nac: fecha_nac, telefono: telefono, pw: pw, calificacion: calificacion, tipo: tipo, });
     };
           
   const [form] = Form.useForm();
