@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { uniqBy } from 'lodash'
 import emailjs from "emailjs-com";
 import { Layout } from 'antd';
-import { Rate, Avatar, Drawer, List, Col, Row, Button, Card, Modal, Input, DatePicker, Space} from 'antd';
+import { Rate, Avatar, Drawer, List, Col, Row, Button, Card, Modal, Input, DatePicker, Space,} from 'antd';
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
 import Axios from 'axios';
 import './homeclient.css'
-// import 'moment/locale/es-AR';
-// import locale from 'antd/es/date-picker/locale/es-AR'; 
+import { Link } from 'react-router-dom';
+
 
 
 const dataServ = [
     {
-      title: 'Juan Doe',
+      title: 'Lautaro Garcia',
     },
   ];
 
@@ -39,7 +39,7 @@ function HomeClient(props1) {
 
     const [opi, setOpinion] = useState([]);
     
-    const [promedio, setPromedio] = useState('');
+    const [promedio, setPromedio] = useState([]);
     const [cal, setCalificacion] = useState([]);
     const [prestador_cal, setPrestador_cal] = useState('');
     const [contratacion_cal, setContratacion_cal] = useState('');
@@ -52,8 +52,10 @@ function HomeClient(props1) {
     const [contratacion, setContratacion] = useState([]);
     const [ID_prestador, setID_prestador] = useState('');
     
-    const [fecha, setfecha] = useState('');
-
+    const [fecha, setfecha] = useState([]);
+    const [cita, setCita] = useState([]);
+    
+    const [user, setUser] = useState([]);
     const [usuario, setUsuario] = useState([]);
     const [cc, setCC] = useState([]);
     const [servicios, setServicios] = useState([]);
@@ -72,25 +74,48 @@ function HomeClient(props1) {
         Axios.get("http://localhost:3001/api/getPartner").then((response) => {
               setPrestadores(response.data);
 
-        });      
-  }, []);
+            });      
+    }, []);
 
-  useEffect(()=>{
-      Axios.post("http://localhost:3001/api/getContrataciones", {
-        ID: pat,   
-      }).then((response) => {
-            setContrataciones(response.data);
-            setID_cliente(pat);
-      });      
-}, []);
+    useEffect(()=>{
+        Axios.post("http://localhost:3001/api/getContrataciones", {
+            ID: pat,   
+        }).then((response) => {
+                setContrataciones(response.data);
+                setID_cliente(pat);
+                
+            });      
+    }, []);
+
+    useEffect(()=>{
+        Axios.post("http://localhost:3001/api/get-user-info", {
+        userid: pat,
+        }).then((response) => {
+        console.log(response);
+        setUser(response.data);
+        });      
+    }, []);
+
+
+    let locale = {
+        emptyText: 'Aún no contrataste ningún servicio',
+      };
+
+      let locale2 = {
+        emptyText: 'Este prestador aún no posee opiniones',
+      };
+
 
     function onChange(value, dateString) {
         console.log('Selected Time: ', value);
         console.log('Formatted Selected Time: ', dateString);
+        
     }
     
-    function onOk(value) {
-        console.log('onOk: ', value);
+    function onOk(e) {
+        console.log('onOk: ', e);
+        fechear(e);
+        
     }
   
     const showModal = (it) => {
@@ -103,7 +128,7 @@ function HomeClient(props1) {
   
     const handleOk = (cc) => { 
         setIsModalVisible(false);
-        Calificar();
+        Calificar2();
         Opinar();    
     };
   
@@ -115,11 +140,11 @@ function HomeClient(props1) {
         setServicios(data1.filter(x => x.id_usuario === item.ID));
         setZonas(data1.filter(x => x.ID_usuario === item.ID));
         setDias(data1.filter(x => x.id_usuario_d === item.ID));
-        setUsuario(item);
-        getOpiniones(item.ID);
-        console.log('it', item.ID);
-        //getPromedioCal(item.ID);
-        setID_prestador(item.ID);      
+        setUsuario(item);        
+        getOpiniones(item);
+        getPromedioCal(item);
+        setID_prestador(item.ID);
+             
       setVisible(true);
 
     };
@@ -142,20 +167,52 @@ function HomeClient(props1) {
         setIsModalVisible_o(false);
       };
 
-    const Contratar = () => {
-        console.log('fecha', fecha);
+
+    const Contratar = () => {        
+        console.log('fechaC', fecha);
         Axios.post("http://localhost:3001/api/contratar", {
           ID_prestador: ID_prestador, 
-          ID_cliente: pat,
+          ID_cliente: pat,  
           fecha: fecha,     
         });
-        setContratacion({ ID_prestador: ID_prestador, ID_cliente: ID_cliente, fecha: fecha, });
+        setContratacion({ ID_prestador: ID_prestador, ID_cliente: ID_cliente, fecha: fecha, });      
 
         
     };
 
-    const Calificar = () => {
-        Axios.post("http://localhost:3001/api/calificar", {
+    const fechear = (e) => {
+        
+        const splitter = e + '';
+        
+        const sp = splitter.split('T');
+        
+        const split_fecha = sp[0] + '';
+        const split_hora = sp[1] + '';
+
+        const fecha_ = split_fecha.split('-');
+        const f = fecha_[2] + '/' + fecha_[1] + '/' + fecha_[0];
+
+        const hora_ = split_hora.split(':');
+        const h = hora_[0] + 'hs.';
+        const send = f + ' ' + h;
+        setCita(send);
+        
+
+    };
+
+    // const Calificar = () => {
+    //     Axios.post("http://localhost:3001/api/calificar", {
+    //         contratacion_cal: contratacion_cal,
+    //         prestador_cal: prestador_cal, 
+    //         id_cliente: pat,
+    //         cal_cal: cal_cal,     
+    //       });
+    //       setCalificacion({ contratacion_cal: contratacion_cal, prestador_cal: prestador_cal, id_cliente: ID_cliente, cal_cal: cal_cal});
+
+    // };
+
+    const Calificar2 = () => {
+        Axios.post("http://localhost:3001/api/calificar2", {
             contratacion_cal: contratacion_cal,
             prestador_cal: prestador_cal, 
             id_cliente: pat,
@@ -175,21 +232,24 @@ function HomeClient(props1) {
           setOpinion({ contratacion_cal: contratacion_cal, prestador_cal: prestador_cal, id_cliente: ID_cliente, opi_opi: opi_opi });
     };
 
-    // const getPromedioCal = (ID) => {
-    //     console.log('prom', ID);
-    //     Axios.get("http://localhost:3001/api/promedioCal", {
-    //         id_prestador: ID,   
-    //       }).then((response) => {
-    //         setPromedio(response.data);
+    const getPromedioCal = (item) => {
+        
+        Axios.post("http://localhost:3001/api/promedioCal", {
+            id_prestador: item.ID,   
+          }).then((response) => {
+            //console.log('response', response.data);
+            setPromedio(response.data);
+            //console.log('prom', promedio[0].prom);
 
-    // })};
+    })};
 
-    const getOpiniones = (ID) => {
+    const getOpiniones = (item) => {
 
-        Axios.get("http://localhost:3001/api/opinionesPrest", {
-        id_prestador: ID,   
+        Axios.post("http://localhost:3001/api/opinionesPrest", {
+        id_prestador: item.ID,   
             }).then((response) => {
         setOpinionesList(response.data);
+
 
     })};
 
@@ -207,9 +267,27 @@ function HomeClient(props1) {
         e.target.reset()
     }
 
+    const Loguear = () => {
+        
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+
+        Axios.post("http://localhost:3001/api/log", {
+          id_usuario: pat,
+          fecha_hora: dateTime,
+          operacion: 'Cerrar sesión',     
+        });
+        localStorage.setItem('user','');
+      };
+
     return (
         <Layout style = {{ minHeight: '10vh'}}>
+            
             <Layout className = "site-layout" ></Layout>
+            {user.map((val, key) => {return (<h2 style={{ marginLeft: '10px'}} >¡Bienvenido {val.nombre}!</h2>)})}
+            <Button onClick={Loguear} type="primary" style={{ marginLeft: '1775px', width: '110px'}}><Link to="/login">Cerrar Sesión</Link></Button>                              
             <div class="container">
                 <main class="content">
                     <landing class="landing">
@@ -218,52 +296,38 @@ function HomeClient(props1) {
                         </Content>
                     </landing>
                         <div className="site-card-wrapper">
-                                {/* <Col span={6}>
-                                <List
-                                    grid={{ gutter: 16, column: 1 }}
-                                    dataSource={data_contrataciones}
-                                    renderItem={item => (
-                                    <List.Item>
-                                        <Card title={<p>{item.nombre} {item.apellido}</p>}>
-                                        <h1>Fecha: {item.fecha}</h1>
-                                        <p>Pendiente de pago</p>
-                                        <Button type="primary" href="https://www.mercadopago.com.ar/home">Pagar</Button>                                                                                        
-                                        </Card>
-                                    </List.Item>
-                                    )}
-                                />
-                                </Col> */}
-
-                                {/* <Col span={6}>
-                                <List
-                                    grid={{ gutter: 16, column: 1 }}
-                                    dataSource={dataServ}
-                                    renderItem={item => (
-                                    <List.Item>
-                                        <Card title={<p>Gastón Donati</p>} style={{height: 253.5 }}>
-                                            <h1>Fecha:</h1>
-                                            <p>02/02/2021</p>
-                                            <p>Finalizado</p>
-                                        </Card>
-                                    </List.Item>
-                                    )}
-                                />
-                                </Col> */}
                                 <List
                                 grid={{ gutter: 16, column: 4 }}
                                 dataSource={data_contrataciones}
+                                locale={locale}
                                 renderItem={it => (
                                 <List.Item>
                                     <List.Item.Meta
                                     description=
-                                                {<Card title={<p>{it.nombre} {it.apellido}</p>}>                                
-                                                <h1>Fecha:</h1>
+                                                {<Card title={<h4>{it.nombre} {it.apellido}</h4>}>                                
+                                                <h4>Fecha:</h4>
                                                 <p>{it.fecha}</p>
                                                 <p>Pendiente de valoración</p>
                                                 <Button type="primary" onClick={()=>showModal(it)}>Calificar servicio</Button>
                                                 </Card>}/>                                                
                                     </List.Item>
-                                    )}/>                                    
+                                    )}/>
+                                    <Col span={6}>
+                                        <List
+                                            grid={{ gutter: 16, column: 1 }}
+                                            dataSource={dataServ}
+                                            renderItem={item => (
+                                            <List.Item>
+                                                <Card style={{width: '227.5px', minHeight: '227.5px'}}  title={<p>{item.title}</p>}>
+                                                <h4>Fecha:</h4>
+                                                <p>20/02/2021 18hs.</p>
+                                                <p>Pendiente de pago</p>
+                                                <Button type="primary" href="https://www.mercadopago.com.ar/home">Pagar</Button>                                                                                        
+                                                </Card>
+                                            </List.Item>
+                                            )}
+                                        />
+                                    </Col>                                                                     
                                     <Modal title="Calificar servicio" visible={isModalVisible} onOk={()=>handleOk(cc)} onCancel={handleCancel} width={1000}>
                                         <h1 style={{ textAlign   : 'center'}}>¿Como calificarías al prestador del servicio contratado?</h1>
                                         <p style={{ textAlign   : 'center'}}><Rate defaultValue={5} character={({ index }) => index + 1} />
@@ -279,6 +343,8 @@ function HomeClient(props1) {
                                             }} style={{ textAlign   : 'center'}} rows="3" cols="10" />
                                     </Modal>
                         </div>
+                        <br/>
+                        <br/>
                     <landing class="landing">
                         <Content style={{ borderColor: 'red', margin: '0 16px',color:"black" }}>
                         <h1>Elegí uno de nuestros representantes</h1>
@@ -301,8 +367,10 @@ function HomeClient(props1) {
                             </div>
                             </Col>
                             <Col span={8}>
-                            <div className="Opinion">
-                            <Rate disabled defaultValue={promedio}/>
+                            <div className="rate">
+                            <Rate disabled defaultValue={usuario.calificacion}/> 
+                            {/* {console.log('la', usuario.calificacion)}
+                            {console.log('lla', promedio[0].prom)}                            */}
                             </div>
                             </Col>
                             </Row>
@@ -340,15 +408,21 @@ function HomeClient(props1) {
                             <div className="Fecha">
                             <h2>Elegí tu turno</h2>
                             <Space direction="vertical" size={12}>
-                                <DatePicker format="DD-MM-YYYY-HH" showToday="true" showTime="true" onChange={onChange} onOk={onOk} 
-                                            onChange={(e) => {
+                                <DatePicker format="DD-MM-YYYY-HH" showToday="true" showTime="true" onChange={onChange} onChange={(e) => {
                                                 setfecha(e) 
-                                                }}/>
+                                                }} onOk={(value) => {onOk(value)}} 
+                                            />
                             </Space>
                             </div>
                             <br/>                            
                             <form onSubmit={sendEmail} >
                                 <div className="row pt-5 mx-auto">
+                                    {/* <div className="col-8 form-group mx-auto">
+                                        <input type="hidden" value={cita} name="fecha"/>
+                                    </div> */}
+                                    <div className="col-8 form-group mx-auto">
+                                        <input type="hidden" value={user.map((val, key) => {return (val.nombre)})} name="cliente"/>
+                                    </div>
                                     <div className="col-8 form-group mx-auto">
                                         <input type="hidden" value={usuario.nombre} name="name"/>
                                     </div>
@@ -367,10 +441,21 @@ function HomeClient(props1) {
                                 </div>
                             </form>
                         </Drawer>
-                        <Modal title="Opiniones" visible={isModalVisible_o} onOk={handleOk_o} onCancel={handleCancel_o}>
-                            <p>Some contents...</p>
-                            <p>{opinionesList}</p>
-                            {console.log('op',opinionesList)}
+                        <Modal  title="Opiniones" visible={isModalVisible_o} onOk={handleOk_o} onCancel={handleCancel_o}>
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={opinionesList}
+                            locale={locale2}
+                            renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                avatar={<Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCDe5JZ_HkfuU5VFQDlF0j1jeCl-SCj_mJdA&usqp=CAU" />}
+                                title={<h3>{item.nombre} {item.apellido}</h3>}
+                                description={item.opinion}
+                                />
+                            </List.Item>
+                            )}
+                        />
                         </Modal>
                             <List
                                 itemLayout="horizontal"
@@ -383,8 +468,8 @@ function HomeClient(props1) {
                                         description= 
                                                 {<div>
                                                     <h1>{item.nombre} {item.apellido}</h1>
-                                                    <p>Promedio de valoraciones:</p>
-                                                    <Rate disabled defaultValue={item.calificacion} />
+                                                        <p>Promedio de valoraciones:</p>
+                                                        <Rate disabled defaultValue={item.calificacion} />
                                                 </div>}
                                     />                                    
                                     <Button type="primary" onClick={()=>showDrawer(item)}>Ver perfil</Button>                                     

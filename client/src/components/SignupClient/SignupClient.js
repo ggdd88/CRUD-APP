@@ -1,6 +1,6 @@
 import React from 'react';
 import {  Radio, Layout, Form, Input, Select, Checkbox, Button, } from 'antd';
-//import {  DatePicker, Space, } from 'antd';
+import {  DatePicker, Space, } from 'antd';
 import { Link } from 'react-router-dom';
 import {useState, useEffect} from "react";
 //import './App.css';
@@ -41,6 +41,10 @@ const tailFormItemLayout = {
     },
   },
 };
+
+function onChange(date, dateString) {
+  console.log(date, dateString);
+}
 
 
 const SignupClient = () => {
@@ -165,9 +169,6 @@ const SignupClient = () => {
               },
             ]}
           >
-                    {/* <input type="text" name="sexo" onChange={(e) => {
-          setSexo(e.target.value) 
-        }} /> */}
                   <Radio.Group onChange={(e) => {
           setSexo(e.target.value) 
         }} buttonStyle="solid">
@@ -178,7 +179,7 @@ const SignupClient = () => {
 
 
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
         name="borndate"
         label="Fecha de nacimiento"
         rules={[
@@ -192,13 +193,12 @@ const SignupClient = () => {
           },
         ]}
       >
-          <Space onChange={(e) => {
-          setFecha_nac(e.target.value) 
-        }} direction="vertical">
-            <DatePicker placeholder="Seleccioná..." onChange={onChange} />
+          <Space direction="vertical">
+            <DatePicker placeholder="Seleccioná..." onChange={onChange} onChange={(e) => {
+          setFecha_nac(e)}} />
           </Space>,
 
-      </Form.Item> */}
+      </Form.Item>
           <Form.Item
             name="documento"
             label="Documento"

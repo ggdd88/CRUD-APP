@@ -1,0 +1,141 @@
+@import '~antd/dist/antd.css';
+
+/* General Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* HEADER */
+
+.title h1 {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 2.9em;
+    text-transform: uppercase;
+}
+
+/* CONTAINER */
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 1.6em auto;
+    
+    gap: 1.6em;
+    /* grid-template-columns: repeat(4, 1fr) 3%;
+     */
+     
+}
+
+.imagen-login{
+    float: right; 
+    margin: 50px 300px 15px 15px;
+    width:100px
+
+}
+.singup {
+    width: 90%;
+    max-width: 800px;
+    margin: 0.5em auto;
+    display: grid;
+    gap: 1.6em; 
+    grid-template-columns: repeat(1, 1fr);
+}
+.container>.header, .container>.content, .container>.sidebar, .container>.footer, .container>div {
+    background: #f0f2f5;
+    padding: 20px;
+    border: 1px solid #f0f2f5;
+    
+}
+
+.container>.header, .container>.footer {
+    
+    grid-column: 1/-1;
+    background-color: #000000;
+    
+}
+    .container>.content {
+    grid-column: span 3;
+    grid-row: span 4;
+}
+
+.content>.login {
+    background: #f0f2f5;
+    padding: 20px;
+    margin-top: 50px;
+    color: #000000;
+    border: #f0f2f5;
+    grid-template-columns: repeat(5, 1fr); 
+}
+
+.content .article h1,
+.content .article p {
+    padding: 10px;
+    text-align: justify;
+}
+
+.container>.sidebar {
+    grid-column: span 2;
+    grid-row: span 4;
+    background: #485460;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .sidebar img {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.container> .related-post {
+    background: #ffffff;
+    color: #1890ff;
+    height: 200px;
+    grid-column: span 2;
+    grid-row: span 4;
+    display: table-cell; 
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    font-size: 3.5ch;
+}
+
+
+.container>.mkt {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    
+    
+}
+
+.container>.related-post:hover {
+    cursor: pointer;
+    
+    background: #1890ff;
+
+} 
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 768px) {
+    .header {
+        text-align: center;
+    }
+    .container .content {
+        grid-column: 1 / -1;
+    }
+    .container .sidebar {
+        grid-column: 1 / 6;
+    }
+
+    .container .related-post {
+        grid-column: 1/-1;
+    }
+}

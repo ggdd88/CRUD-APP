@@ -9,6 +9,8 @@ import signupClientSuccess from './components/signupClientSuccess';
 import HomeClient from './components/HomeClient';
 import HomePartner from './components/HomePartner';
 import contractSuccess from './components/contractSuccess';
+import About from './components/about';
+import Contact from './components/contact';
 
 
 const Routes = () => {
@@ -23,6 +25,8 @@ const Routes = () => {
                 <Route exact path="/HomeClient" component={HomeClient} />
                 <Route exact path="/HomePartner" component={HomePartner} />
                 <Route exact path="/contractSuccess" component={contractSuccess} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/contact" component={Contact} />
                 <Route path="/" component={login} />
             </Switch>
         </App>

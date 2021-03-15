@@ -4,6 +4,7 @@ import { Layout, Breadcrumb, message, Card } from 'antd';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import './login.css'
 
 
 
@@ -57,6 +58,7 @@ const layout = {
       const [pwLogin, setPwLogin] = useState("");
 
       const [loginStatus, setLoginStatus] = useState("");
+      //const [log, setLog] = useState([]);
 
       const [userInfo, setUserInfo] = useState("");
 
@@ -71,12 +73,11 @@ const layout = {
           } else {
             if(response.data[0].tipo == 0) {
               setLoginStatus(response.data[0].email);
-              setUserInfo(response.data);
+              setUserInfo(response.data);              
               console.log(a);
               console.log(b);            
               localStorage.setItem('user',response.data[0].ID);
-              a.history.push('./HomePartner')
-              //<Link to={`/HomePartner/${setLoginStatus(response.data[0].ID)}`}></Link>
+              a.history.push('./HomePartner')              
             }
             else{
               setLoginStatus(response.data[0].email);
@@ -85,15 +86,42 @@ const layout = {
               console.log(b);            
               localStorage.setItem('user',response.data[0].ID);
               a.history.push('./HomeClient')
-            }
+            };
+            Loguear(response.data[0].ID, 'Iniciar Sesión');
                                   
           }
+          
         }).catch(e => console.log('ERROR', e));
+        
       };
-    return (
+
+
+
+      const Loguear = (ide, string) => {
+        
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+
+        Axios.post("http://localhost:3001/api/log", {
+          id_usuario: ide,
+          fecha_hora: dateTime,
+          operacion: string,     
+        });
+        //setLog({ id_usuario: id_usuario, fecha_hora: fecha_hora, operacion: operacion, }); 
+      };
+      
+      return (
         <Layout style={{ minHeight: '75vh' }}>
+            <div class = "buttons"  >                             
+            <Button type="primary"style={{margin:'0.7em',marginLeft:'70em'}} ><Link to="/signup"> Quiero ser parte de Go Beauty</Link></Button>
+              <Button type="primary"style={{margin:'0.7em'}}><Link to="/signupClient"> Registrarse </Link></Button>
+            </div>
             
             <Layout className="site-layout"></Layout>
+
+
                 <div class="container">
                 <element className = "imagen-login">
                   <img src="/login.png"/>
@@ -146,7 +174,11 @@ const layout = {
               <Form.Item {...tailLayout} name="remember" valuePropName="checked">
                   <Checkbox>Recordarme</Checkbox>
               </Form.Item>
-
+              <Form.Item style={{marginLeft:'10.5em'}} >
+                <a className="login-form-forgot" >
+                  ¿Olvidó la contraseña?
+                </a>
+              </Form.Item>
               <Form.Item {...tailLayout}>
                   <Button type="primary" htmlType="submit" onClick={Ingresar}>Ingresar</Button>
               </Form.Item>
@@ -158,17 +190,17 @@ const layout = {
             </main>
 
         <div class="related-post">       
-            <h1>En la comodidad de tu casa</h1>
+            <h3>En la comodidad de tu casa</h3>
         </div>
         <div class="related-post">
-            <h1>Cuando quieras. Como quieras</h1>
+            <h3>Cuando quieras. Como quieras</h3>
         </div>
         <div class="related-post">
-            <h1>El mejor precio del mercado</h1>
+            <h3>El mejor precio del mercado</h3>
         </div>
-        <div class="mkt">
-            <ReactPlayer
-              url="https://youtu.be/Q3Ygsb_Ds_s"
+        <div >
+            <ReactPlayer style= {{position: "relative",
+    left: "18%",}} url="https://youtu.be/Q3Ygsb_Ds_s"
             />
           </div>
         </div>

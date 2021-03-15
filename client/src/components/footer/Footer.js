@@ -12,7 +12,7 @@ class Footer extends React.Component {
   
     render(){
         return(
-            <div class="footer"style={{ color: 'white', height: 100, backgroundColor: '#000000', textAlign: 'center' }} >Go Beauty ©2020
+            <div class="footer"style={{ color: 'white', height: 100, backgroundColor: '#000000', textAlign: 'center' }} >Go Beauty ©2021
                 <div class="social-container">
                 <h3>Seguinos en nuestras redes sociales</h3>
                 <a href="https://www.youtube.com/"

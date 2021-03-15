@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
-import { Card, Form, Input, Select, Rate, Avatar, Col, Row, Button,} from 'antd';
+import { Card, Form, Input, Select, Rate, Avatar, Col, Row, Button, Modal, List} from 'antd';
 import { EditOutlined, } from '@ant-design/icons';
 import Axios from 'axios';
 import './HomePartner.css';
+import { Link } from 'react-router-dom';
 
 const {Content} = Layout;
 const { Meta } = Card;
@@ -49,12 +50,16 @@ function onChange(checkedValues) {
     const [diasUsuario, setDiasUsuario] = useState([]);   
 
 
+    const [user, setUser] = useState([]);
     const [zone, setZona] = useState('');
     const [zonaList, setZona2] = useState([]);    
     const [tarifa, setTarifa] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [servicioList, setServicio] = useState([]);    
     const [descripcionDias, setDias_] = useState('');
+
+    const [isModalVisible_o, setIsModalVisible_o] = useState(false);
+    const [opinionesList, setOpinionesList] = useState([]);
     
 
     useEffect(()=>{
@@ -63,6 +68,7 @@ function onChange(checkedValues) {
           }).then((response) => {
             console.log(response);
             setUsuario(response.data);
+            getOpiniones(cat);
           });      
     }, [])
 
@@ -91,8 +97,20 @@ function onChange(checkedValues) {
       }).then((response) => {
         console.log(response);
         setDiasUsuario(response.data);
+        setUser(response.data);
       });      
     }, [])
+
+    const getOpiniones = (item) => {
+
+      Axios.post("http://localhost:3001/api/opinionesPrest", {
+      id_prestador: item,   
+          }).then((response) => {
+      setOpinionesList(response.data);
+
+  })};
+
+
 
 
     const setZona3 = () => {
@@ -122,12 +140,42 @@ function onChange(checkedValues) {
       });
     };
 
+    const showModal_o = () => {
+      setIsModalVisible_o(true);
+    };
+  
+    const handleOk_o = () => {
+      setIsModalVisible_o(false);
+    };
+  
+    const handleCancel_o = () => {
+      setIsModalVisible_o(false);
+    };
+
+    const Loguear = () => {
+        
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date+' '+time;
+
+      Axios.post("http://localhost:3001/api/log", {
+        id_usuario: cat,
+        fecha_hora: dateTime,
+        operacion: 'Cerrar sesión',     
+      });
+      localStorage.setItem('user','');
+    };
+
+
 
 
 
     return (
         <Layout style = {{ minHeight: '10vh' }}>
             <Layout className = "site-layout" ></Layout>
+            {user.map((val, key) => {return (<h2 style={{ marginLeft: '10px'}} >¡Bienvenido {val.nombre}!</h2>)})}
+            <Button onClick={Loguear} type="primary" style={{ marginLeft: '1775px', width: '110px'}}><Link to="/login">Cerrar Sesión</Link></Button> 
             <div class="container">
                 <main class="content">
                     <landing class="landing">
@@ -147,7 +195,7 @@ function onChange(checkedValues) {
                           <EditOutlined key="edit" />,                            
                           ]}>
                           <Meta
-                          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                          
                           title={usuario.map((val, key) => {
                             return (
                               <h1>{val.nombre} {val.apellido}</h1>
@@ -168,12 +216,28 @@ function onChange(checkedValues) {
                             <p>Email: {usuario.map((val, key) => {
                             return (
                               <p>{val.email}</p>)})}</p>
-                            <p>Calificación: {usuario.map((val, key) => {
+                            <p>Promedio de calificaciones: {usuario.map((val, key) => {
                             return (
-                              <Rate disabled defaultValue={4} />)})}</p>
+                              <Rate disabled defaultValue={val.calificacion} />)})}</p>
+                              <Button type="primary" onClick={showModal_o}>Ver opiniones</Button>
                             </div>}/>
                       </Card>
-                    </div>                      
+                    </div>
+                    <Modal title="Opiniones" visible={isModalVisible_o} onOk={handleOk_o} onCancel={handleCancel_o}>
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={opinionesList}
+                            renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                avatar={<Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCDe5JZ_HkfuU5VFQDlF0j1jeCl-SCj_mJdA&usqp=CAU" />}
+                                title={<h3>{item.nombre} {item.apellido}</h3>}
+                                description={item.opinion}
+                                />
+                            </List.Item>
+                            )}
+                        />
+                        </Modal>                     
                     <div id="grid_2">
                       <Card style={{marginBottom: 25 }} title="Servicios" style={{ width: 750 }}>
                       {serviciosUsuario.map((val, key) => {
