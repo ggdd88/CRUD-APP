@@ -99,7 +99,7 @@ app.post("/api/get-user-days", (req, res)=>{
 
     const sqlSelectServiceUser = "SELECT descripcion_d FROM dias WHERE id_usuario_d = ?";
     db.query(sqlSelectServiceUser, [userid], (err, result) => {
-        console.log(result)
+        //console.log(result)
         res.send(result);
     });
 });
@@ -109,7 +109,7 @@ app.post("/api/get-user-zones", (req, res)=>{
 
     const sqlSelectZoneUser = "SELECT descripcion_z FROM zonas WHERE ID_usuario = ?";
     db.query(sqlSelectZoneUser, [userid], (err, result) => {
-        console.log(result)
+        //console.log(result)
         res.send(result);
     });
 });
@@ -119,7 +119,7 @@ app.post("/api/get-user-services", (req, res)=>{
 
     const sqlSelectServiceUser = "SELECT descripcion, tarifa FROM servicios WHERE ID_usuario = ?";
     db.query(sqlSelectServiceUser, [userid], (err, result) => {
-        console.log(result)
+        //console.log(result)
         res.send(result);
     });
 });
@@ -128,7 +128,7 @@ app.post("/api/get-prestador-services", (req, res)=>{
 
     const sqlSelectServicesUser = "SELECT servicios.descripcion, servicios.tarifa, usuarios.nombre, usuarios.apellido  FROM servicios, usuarios WHERE ID_usuario = ?";
     db.query(sqlSelectServicesUser, (err, result) => {
-        console.log(result)
+        //console.log(result)
         res.send(result);
     });
 });

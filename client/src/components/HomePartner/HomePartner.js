@@ -69,6 +69,7 @@ function onChange(checkedValues) {
             console.log(response);
             setUsuario(response.data);
             getOpiniones(cat);
+            setUser(response.data);
           });      
     }, [])
 
@@ -80,7 +81,7 @@ function onChange(checkedValues) {
         console.log(response.data);
         setZonasUsuario(response.data);
       });      
-}, [])
+}, [zonasUsuario]);
 
     useEffect(()=>{
       Axios.post("http://localhost:3001/api/get-user-services", {
@@ -89,7 +90,7 @@ function onChange(checkedValues) {
         console.log(response);
         setServiciosUsuario(response.data);
       });      
-    }, [])
+    }, [serviciosUsuario]);
 
     useEffect(()=>{
       Axios.post("http://localhost:3001/api/get-user-days", {
@@ -97,9 +98,9 @@ function onChange(checkedValues) {
       }).then((response) => {
         console.log(response);
         setDiasUsuario(response.data);
-        setUser(response.data);
+        
       });      
-    }, [])
+    }, [diasUsuario]);
 
     const getOpiniones = (item) => {
 
@@ -127,8 +128,8 @@ function onChange(checkedValues) {
         id_usuario: cat, 
         descripcion: descripcion,  
         tarifa: tarifa,
-    
       });
+      
       // setServicio([...servicioList, { id_usuario: id_usuario, descripcion: descripcion, tarifa: tarifa }      
       // ]);
     };

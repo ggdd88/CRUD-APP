@@ -75,7 +75,7 @@ function HomeClient(props1) {
               setPrestadores(response.data);
 
             });      
-    }, []);
+    }, [opi]);
 
     useEffect(()=>{
         Axios.post("http://localhost:3001/api/getContrataciones", {
