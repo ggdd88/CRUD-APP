@@ -114,9 +114,9 @@ const layout = {
       
       return (
         <Layout style={{ minHeight: '75vh' }}>
-            <div class = "buttons"  >                             
-            <Button type="primary"style={{margin:'0.7em',marginLeft:'70em'}} ><Link to="/signup"> Quiero ser parte de Go Beauty</Link></Button>
-              <Button type="primary"style={{margin:'0.7em'}}><Link to="/signupClient"> Registrarse </Link></Button>
+            <div class = "buttons">
+            <Button type="primary"style={{ marginTop: '10px', marginLeft: '1535px'}}><Link to="/signupClient"> Registrarse </Link></Button>                             
+            <Button type="primary"style={{ marginLeft: '10px', width: '250px'}} ><Link to="/signup"> Quiero ser parte de Go Beauty</Link></Button>
             </div>
             
             <Layout className="site-layout"></Layout>
@@ -173,14 +173,10 @@ const layout = {
 
               <Form.Item {...tailLayout} name="remember" valuePropName="checked">
                   <Checkbox>Recordarme</Checkbox>
-              </Form.Item>
-              <Form.Item style={{marginLeft:'10.5em'}} >
-                <a className="login-form-forgot" >
-                  ¿Olvidó la contraseña?
-                </a>
-              </Form.Item>
+                  <a type="link" style={{ marginLeft: '65px', color: 'black'}}>Olvidé mi contraseña</a>
+              </Form.Item>              
               <Form.Item {...tailLayout}>
-                  <Button type="primary" htmlType="submit" onClick={Ingresar}>Ingresar</Button>
+                  <Button style={{width: '306.66px'}} type="primary" htmlType="submit" onClick={Ingresar}>Ingresar</Button>
               </Form.Item>
             </Form>
             </div>
@@ -188,7 +184,6 @@ const layout = {
                   </Content>
                   </login>
             </main>
-
         <div class="related-post">       
             <h3>En la comodidad de tu casa</h3>
         </div>
@@ -198,6 +193,9 @@ const layout = {
         <div class="related-post">
             <h3>El mejor precio del mercado</h3>
         </div>
+        <br/>
+        <br/>
+        <br/>
         <div >
             <ReactPlayer style= {{position: "relative",
     left: "18%",}} url="https://youtu.be/Q3Ygsb_Ds_s"

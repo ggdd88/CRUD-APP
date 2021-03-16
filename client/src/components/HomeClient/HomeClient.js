@@ -308,7 +308,7 @@ function HomeClient(props1) {
                                                 <h4>Fecha:</h4>
                                                 <p>{it.fecha}</p>
                                                 <p>Pendiente de valoración</p>
-                                                <Button type="primary" onClick={()=>showModal(it)}>Calificar servicio</Button>
+                                                <Button type="primary" onClick={()=>showModal(it)}>Valorar servicio</Button>
                                                 </Card>}/>                                                
                                     </List.Item>
                                     )}/>
@@ -328,7 +328,7 @@ function HomeClient(props1) {
                                             )}
                                         />
                                     </Col>                                                                     
-                                    <Modal title="Calificar servicio" visible={isModalVisible} onOk={()=>handleOk(cc)} onCancel={handleCancel} width={1000}>
+                                    <Modal title="Valorá el servicio contratado" visible={isModalVisible} onOk={()=>handleOk(cc)} onCancel={handleCancel} width={1000}>
                                         <h1 style={{ textAlign   : 'center'}}>¿Como calificarías al prestador del servicio contratado?</h1>
                                         <p style={{ textAlign   : 'center'}}><Rate defaultValue={5} character={({ index }) => index + 1} />
                                         <br />
@@ -338,7 +338,7 @@ function HomeClient(props1) {
                                         <br />    
                                         <h1 style={{ textAlign   : 'center'}}>Dejanos tu opinión acerca del prestador y del servicio</h1>
                                         <br />
-                                        <Input.TextArea onChange={(e) => {
+                                        <Input.TextArea defaultValue= "" onChange={(e) => {
                                             setOpi_opi(e.target.value)
                                             }} style={{ textAlign   : 'center'}} rows="3" cols="10" />
                                     </Modal>
